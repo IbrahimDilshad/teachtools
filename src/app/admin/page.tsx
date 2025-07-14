@@ -42,7 +42,7 @@ const summaryData = [
 export default function AdminDashboardPage() {
   return (
     <div className="flex flex-col gap-6">
-       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Tutors</CardTitle>
@@ -90,7 +90,8 @@ export default function AdminDashboardPage() {
           <CardDescription>A summary of new tutors joining the platform.</CardDescription>
         </CardHeader>
         <CardContent>
-            <ResponsiveContainer width="100%" height={350}>
+          <div className="overflow-x-auto">
+            <ResponsiveContainer width="100%" height={350} minWidth={300}>
                 <BarChart data={summaryData}>
                     <XAxis
                         dataKey="name"
@@ -109,6 +110,7 @@ export default function AdminDashboardPage() {
                     <Bar dataKey="total" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
                 </BarChart>
             </ResponsiveContainer>
+          </div>
         </CardContent>
       </Card>
     </div>

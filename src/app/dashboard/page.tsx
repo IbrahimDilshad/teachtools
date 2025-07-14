@@ -92,29 +92,29 @@ export default function Dashboard() {
                 Here are your next scheduled sessions.
               </CardDescription>
             </div>
-            <Button asChild size="sm" className="ml-auto gap-1">
+            <Button asChild size="sm" className="ml-auto gap-1 whitespace-nowrap">
               <Link href="/dashboard/schedule">
                 View All
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
             </Button>
           </CardHeader>
-          <CardContent>
+          <CardContent className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Student</TableHead>
                   <TableHead>Class</TableHead>
-                  <TableHead>Date & Time</TableHead>
+                  <TableHead className="min-w-[150px]">Date & Time</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {classes.slice(0, 3).map((c) => (
                   <TableRow key={c.id}>
                     <TableCell>
-                      <div className="font-medium">{c.studentName}</div>
+                      <div className="font-medium whitespace-nowrap">{c.studentName}</div>
                     </TableCell>
-                    <TableCell>{c.title}</TableCell>
+                    <TableCell className="whitespace-nowrap">{c.title}</TableCell>
                     <TableCell>{c.date} @ {c.startTime}</TableCell>
                   </TableRow>
                 ))}
@@ -130,28 +130,28 @@ export default function Dashboard() {
                 Overview of recent payment statuses.
               </CardDescription>
             </div>
-            <Button asChild size="sm" className="ml-auto gap-1">
+            <Button asChild size="sm" className="ml-auto gap-1 whitespace-nowrap">
               <Link href="/dashboard/income">
                 View All
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
             </Button>
           </CardHeader>
-          <CardContent>
+          <CardContent className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Student</TableHead>
                   <TableHead>Amount</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>Due Date</TableHead>
+                  <TableHead className="min-w-[100px]">Due Date</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {payments.slice(0, 3).map((p) => (
                   <TableRow key={p.id}>
                     <TableCell>
-                      <div className="font-medium">{p.studentName}</div>
+                      <div className="font-medium whitespace-nowrap">{p.studentName}</div>
                     </TableCell>
                     <TableCell>${p.amount.toFixed(2)}</TableCell>
                     <TableCell>

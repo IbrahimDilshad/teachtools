@@ -95,43 +95,45 @@ export default function IncomePage() {
         </Dialog>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Student</TableHead>
-              <TableHead>Amount</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="hidden sm:table-cell">Due Date</TableHead>
-              <TableHead className="hidden sm:table-cell">Paid On</TableHead>
-              <TableHead>
-                <span className="sr-only">Actions</span>
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {payments.map(payment => (
-              <TableRow key={payment.id}>
-                <TableCell className="font-medium">{payment.studentName}</TableCell>
-                <TableCell>${payment.amount.toFixed(2)}</TableCell>
-                <TableCell>
-                  <Badge 
-                    variant={payment.status === 'paid' ? 'default' : payment.status === 'unpaid' ? 'secondary' : 'destructive'}
-                    className={payment.status === 'paid' ? 'bg-accent text-accent-foreground' : ''}
-                  >
-                    {payment.status}
-                  </Badge>
-                </TableCell>
-                <TableCell className="hidden sm:table-cell">{payment.dueDate}</TableCell>
-                <TableCell className="hidden sm:table-cell">{payment.paidDate || 'N/A'}</TableCell>
-                <TableCell>
-                  <Button variant="outline" size="sm">Mark as Paid</Button>
-                </TableCell>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Student</TableHead>
+                <TableHead>Amount</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="min-w-[120px]">Due Date</TableHead>
+                <TableHead className="min-w-[120px]">Paid On</TableHead>
+                <TableHead>
+                  <span className="sr-only">Actions</span>
+                </TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {payments.map(payment => (
+                <TableRow key={payment.id}>
+                  <TableCell className="font-medium whitespace-nowrap">{payment.studentName}</TableCell>
+                  <TableCell>${payment.amount.toFixed(2)}</TableCell>
+                  <TableCell>
+                    <Badge 
+                      variant={payment.status === 'paid' ? 'default' : payment.status === 'unpaid' ? 'secondary' : 'destructive'}
+                      className={payment.status === 'paid' ? 'bg-accent text-accent-foreground' : ''}
+                    >
+                      {payment.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>{payment.dueDate}</TableCell>
+                  <TableCell>{payment.paidDate || 'N/A'}</TableCell>
+                  <TableCell>
+                    <Button variant="outline" size="sm" className="whitespace-nowrap">Mark as Paid</Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </CardContent>
-      <CardFooter className="justify-between">
+      <CardFooter className="flex-col sm:flex-row items-start sm:items-center sm:justify-between gap-4">
         <div className="text-xs text-muted-foreground">
           Showing <strong>1-5</strong> of <strong>{payments.length}</strong> payments
         </div>

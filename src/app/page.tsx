@@ -1,8 +1,14 @@
 import Link from 'next/link';
-import { GraduationCap, ArrowRight } from 'lucide-react';
+import { GraduationCap, ArrowRight, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetClose
+} from "@/components/ui/sheet"
 
 const features = [
   {
@@ -45,7 +51,7 @@ export default function LandingPage() {
           <GraduationCap className="h-7 w-7 text-primary" />
           <span className="font-headline">TeachTools</span>
         </Link>
-        <nav className="flex items-center gap-4">
+        <nav className="hidden md:flex items-center gap-4">
           <Button variant="ghost" asChild>
             <Link href="/login">Log In</Link>
           </Button>
@@ -55,6 +61,28 @@ export default function LandingPage() {
             </Link>
           </Button>
         </nav>
+        <Sheet>
+            <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden">
+                    <Menu className="h-6 w-6" />
+                    <span className="sr-only">Toggle Menu</span>
+                </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                <div className="flex flex-col h-full">
+                    <div className="flex-grow flex flex-col items-center justify-center gap-6">
+                         <SheetClose asChild>
+                             <Link href="/login" className="text-lg font-medium">Log In</Link>
+                         </SheetClose>
+                         <SheetClose asChild>
+                            <Button asChild className="w-full">
+                                <Link href="/login">Get Started Free</Link>
+                            </Button>
+                         </SheetClose>
+                    </div>
+                </div>
+            </SheetContent>
+        </Sheet>
       </header>
 
       <main className="flex-grow">
@@ -64,13 +92,13 @@ export default function LandingPage() {
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold font-headline tracking-tight">
             Streamline Your Teaching,
-            <br />
-            <span className="text-primary">Amplify Your Impact.</span>
+            <br className="hidden sm:inline" />
+            <span className="text-primary"> Amplify Your Impact.</span>
           </h1>
           <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground">
             TeachTools empowers modern educators with powerful tools to manage schedules, track student progress, handle payments, and more. Focus on what you do best: teaching.
           </p>
-          <div className="mt-8 flex justify-center gap-4">
+          <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
             <Button size="lg" asChild>
               <Link href="/login">
                 Start Your Free Trial
