@@ -7,7 +7,6 @@ import {
   Calendar, 
   CheckSquare, 
   DollarSign, 
-  FolderKanban, 
   GraduationCap, 
   LayoutDashboard, 
   Settings, 
@@ -26,9 +25,8 @@ import {
   SidebarFooter,
   SidebarInset,
 } from "@/components/ui/sidebar"
-import { Button } from "@/components/ui/button"
 import { DashboardHeader } from "@/components/dashboard/header"
-import { cn } from "@/lib/utils"
+import { Chatbot } from "@/components/dashboard/chatbot"
 
 const navItems = [
   { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -36,7 +34,6 @@ const navItems = [
   { href: "/dashboard/students", icon: Users, label: "Students" },
   { href: "/dashboard/income", icon: DollarSign, label: "Income" },
   { href: "/dashboard/attendance", icon: CheckSquare, label: "Attendance" },
-  { href: "/dashboard/resources", icon: FolderKanban, label: "Resources" },
   { href: "/dashboard/reminders", icon: Bell, label: "Smart Reminders" },
 ]
 
@@ -105,6 +102,7 @@ export default function DashboardLayout({
             <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto">
                 {children}
             </main>
+            <Chatbot />
         </div>
       </SidebarInset>
     </SidebarProvider>

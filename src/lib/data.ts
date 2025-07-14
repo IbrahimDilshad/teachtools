@@ -1,3 +1,19 @@
+export type User = {
+    id: string;
+    name: string;
+    email: string;
+    isPremium: boolean;
+    subjects: string[];
+}
+
+export const currentUser: User = {
+    id: 'user1',
+    name: 'Ali',
+    email: 'ali@example.com',
+    isPremium: true,
+    subjects: ['Physics', 'Math'],
+}
+
 export type Student = {
   id: string;
   name: string;
@@ -55,9 +71,4 @@ export type Resource = {
   lastModified: string;
 };
 
-export const resources: Resource[] = [
-  { id: 'r1', name: 'Math Worksheets', type: 'folder', size: '15.2 MB', lastModified: '2024-07-10' },
-  { id: 'r2', name: 'Chemistry Intro.pdf', type: 'pdf', size: '2.1 MB', lastModified: '2024-07-05' },
-  { id: 'r3', name: 'Shakespearean Sonnets.doc', type: 'doc', size: '300 KB', lastModified: '2024-06-28' },
-  { id: 'r4', name: 'Calculus Explained', type: 'video', size: '128 MB', lastModified: '2024-07-12' },
-];
+export const resources: Resource[] = [];
