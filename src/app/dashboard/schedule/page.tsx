@@ -1,0 +1,100 @@
+import { PlusCircle } from "lucide-react"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { classes } from "@/lib/data"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/checkbox"
+
+export default function SchedulePage() {
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <div>
+          <CardTitle>Class Schedule</CardTitle>
+          <CardDescription>Manage your weekly tutoring sessions.</CardDescription>
+        </div>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button size="sm" className="gap-1">
+              <PlusCircle className="h-4 w-4" />
+              New Class
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Create a new class</DialogTitle>
+              <DialogDescription>
+                Fill in the details for the new session.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="class-name" className="text-right">
+                  Class Name
+                </Label>
+                <Input id="class-name" defaultValue="Algebra II" className="col-span-3" />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="student-name" className="text-right">
+                  Student
+                </Label>
+                <Input id="student-name" defaultValue="Alex Johnson" className="col-span-3" />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="date" className="text-right">
+                  Date
+                </Label>
+                <Input id="date" type="date" defaultValue="2024-07-25" className="col-span-3" />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="time" className="text-right">
+                  Time
+                </Label>
+                <Input id="time" type="time" defaultValue="10:00" className="col-span-3" />
+              </div>
+               <div className="flex items-center space-x-2 col-start-2 col-span-3">
+                <Checkbox id="recurring" />
+                <Label htmlFor="recurring">Set as recurring class</Label>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button type="submit">Create Class</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {classes.map((session) => (
+            <Card key={session.id} className="hover:shadow-md transition-shadow">
+              <CardHeader>
+                <CardTitle className="text-lg">{session.title}</CardTitle>
+                <CardDescription>{session.studentName}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="font-medium">{session.date}</p>
+                <p className="text-muted-foreground">{session.startTime} - {session.endTime}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
