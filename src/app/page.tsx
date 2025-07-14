@@ -28,19 +28,19 @@ const features = [
     description: 'Effortlessly track earnings, manage payments, and generate monthly income summaries.',
   },
   {
-    icon: '📚',
-    title: 'Resource Library',
-    description: 'Upload, tag, and manage all your learning materials in one centralized location.',
+    icon: '🤖',
+    title: 'AI Teaching Assistant',
+    description: 'AI-powered assistance to help with lesson plans, content creation, and student queries.',
   },
   {
-    icon: '🤖',
+    icon: '🔔',
     title: 'Smart Reminders',
     description: 'AI-powered reminders for classes, payments, and attendance to keep everyone on track.',
   },
   {
-    icon: '🔗',
-    title: 'Shareable Profile',
-    description: 'A professional, shareable profile link with a "Book Me" call-to-action.',
+    icon: '💸',
+    title: 'Simple Invoicing',
+    description: 'A manual invoicing system to request payments from students via local methods.',
   },
 ];
 
@@ -57,7 +57,7 @@ export default function LandingPage() {
             <Link href="/login">Log In</Link>
           </Button>
           <Button asChild>
-            <Link href="/login">
+            <Link href="/signup">
               Get Started Free <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
@@ -78,7 +78,7 @@ export default function LandingPage() {
                          </SheetClose>
                          <SheetClose asChild>
                             <Button asChild className="w-full max-w-[200px]">
-                                <Link href="/login">Get Started Free</Link>
+                                <Link href="/signup">Get Started Free</Link>
                             </Button>
                          </SheetClose>
                     </div>
@@ -102,12 +102,12 @@ export default function LandingPage() {
           </p>
           <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
             <Button size="lg" asChild>
-              <Link href="/login">
+              <Link href="/signup">
                 Start Your Free Trial
               </Link>
             </Button>
-            <Button size="lg" variant="outline">
-              Learn More
+            <Button size="lg" variant="outline" asChild>
+              <Link href="#features">Learn More</Link>
             </Button>
           </div>
 
@@ -123,6 +123,7 @@ export default function LandingPage() {
                 alt="TeachTools Dashboard Preview"
                 data-ai-hint="dashboard computer"
                 className="rounded-lg border-4 border-background w-full h-auto"
+                priority
               />
             </div>
           </div>
@@ -155,7 +156,15 @@ export default function LandingPage() {
 
       <footer className="bg-background border-t">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-muted-foreground text-sm text-center sm:text-left">&copy; {new Date().getFullYear()} TeachTools. All rights reserved.</p>
+          <div className="text-muted-foreground text-sm text-center sm:text-left">
+            <p>&copy; {new Date().getFullYear()} TeachTools. All rights reserved.</p>
+            <p>
+              Powered by{' '}
+              <a href="https://www.skillssphere.site" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">
+                Skills Sphere
+              </a>
+            </p>
+          </div>
           <div className="flex items-center gap-2">
             <GraduationCap className="h-5 w-5 text-muted-foreground" />
             <span className="font-bold font-headline text-muted-foreground">TeachTools</span>

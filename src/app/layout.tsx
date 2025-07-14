@@ -12,10 +12,35 @@ const ptSans = PT_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'TeachTools',
+  title: {
+    default: 'TeachTools - The All-in-One Toolkit for Modern Educators',
+    template: '%s | TeachTools',
+  },
   description:
-    'A powerful toolkit for modern educators to manage schedules, track progress, and streamline communication.',
+    'TeachTools empowers modern educators with powerful tools to manage schedules, track student progress, handle payments, and use AI to streamline their teaching. Start for free!',
+  keywords: ['tutor software', 'teaching tools', 'class management', 'student progress tracking', 'online teaching platform', 'educator tools', 'AI for teachers'],
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
+  openGraph: {
+    title: 'TeachTools - The All-in-One Toolkit for Modern Educators',
+    description: 'Streamline your teaching, track progress, and manage payments with ease.',
+    url: 'https://teachtools.example.com', // Replace with your actual domain
+    siteName: 'TeachTools',
+    images: [
+      {
+        url: 'https://placehold.co/1200x630.png', // Replace with your OG image
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'TeachTools - The All-in-One Toolkit for Modern Educators',
+    description: 'The ultimate toolkit for tutors and educators. Manage schedules, students, and payments effortlessly.',
+    images: ['https://placehold.co/1200x630.png'], // Replace with your Twitter image
+  },
 };
 
 export default function RootLayout({
