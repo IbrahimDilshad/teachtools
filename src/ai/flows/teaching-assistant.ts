@@ -36,7 +36,11 @@ const teachingAssistantFlow = ai.defineFlow(
     outputSchema: z.any(),
   },
   async (input) => {
-    const { stream } = await teachingAssistantPrompt.generateStream(input);
+    const { stream } = ai.generateStream({
+        prompt: teachingAssistantPrompt,
+        input: input,
+        model: ai.getModel('googleai/gemini-1.5-flash'),
+    });
     
     const encoder = new TextEncoder();
     const readableStream = new ReadableStream({
