@@ -139,7 +139,7 @@ export default function DashboardLayout({
             <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto">
                 {children}
             </main>
-            { currentUser.isPremium && <Chatbot /> }
+            <Chatbot />
         </div>
       </SidebarInset>
     </SidebarProvider>

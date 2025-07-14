@@ -31,6 +31,8 @@ export default function UpgradePage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    // In a real app, you would save this request to your database
+    console.log("Upgrade request submitted for:", user?.email)
     toast({
         title: "Request Sent!",
         description: "We've received your upgrade request. We'll email you the payment details shortly.",
@@ -50,7 +52,7 @@ export default function UpgradePage() {
         </CardHeader>
         <CardContent>
           <div className="text-center mb-6">
-            <span className="text-4xl font-bold">$10</span>
+            <span className="text-4xl font-bold">100 RS</span>
             <span className="text-muted-foreground">/month</span>
           </div>
           <ul className="space-y-3 mb-8">
