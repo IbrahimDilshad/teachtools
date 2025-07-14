@@ -7,7 +7,8 @@ import {
   Sheet,
   SheetContent,
   SheetTrigger,
-  SheetClose
+  SheetClose,
+  SheetTitle
 } from "@/components/ui/sheet"
 
 const features = [
@@ -69,6 +70,7 @@ export default function LandingPage() {
                 </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
                 <div className="flex flex-col h-full">
                     <div className="flex-grow flex flex-col items-center justify-center gap-6">
                          <SheetClose asChild>
