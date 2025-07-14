@@ -39,7 +39,7 @@ const teachingAssistantFlow = ai.defineFlow(
     const { stream } = ai.generateStream({
         prompt: teachingAssistantPrompt,
         input: input,
-        model: ai.getModel('googleai/gemini-1.5-flash'),
+        model: 'googleai/gemini-1.5-flash',
     });
     
     const encoder = new TextEncoder();
