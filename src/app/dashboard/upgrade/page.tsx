@@ -46,7 +46,7 @@ export default function UpgradePage() {
              <CardContent className="p-4 text-center">
                 <h4 className="font-semibold mb-2">How to Upgrade</h4>
                 <p className="text-sm text-muted-foreground">
-                    To get premium access, please contact us. We will send you a secure Payoneer payment link. Once paid, we will activate your premium membership.
+                    To get premium access, please contact us. We will arrange payment via JazzCash, EasyPaisa, or another local method. Once paid, we will activate your premium membership.
                 </p>
              </CardContent>
            </Card>
