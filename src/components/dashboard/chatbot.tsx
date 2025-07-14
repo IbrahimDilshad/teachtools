@@ -36,10 +36,18 @@ export function Chatbot() {
   const isLimitReached = !currentUser.isPremium && userMessageCount >= MESSAGE_LIMIT;
 
   useEffect(() => {
+    // Load message count from localStorage when component mounts
+    const savedCount = localStorage.getItem(`messageCount_${currentUser.id}`);
+    if (savedCount) {
+      setUserMessageCount(parseInt(savedCount, 10));
+    }
+  }, []);
+
+  useEffect(() => {
     if (isOpen) {
+      // Reset messages, but not the permanent message count
       setMessages([]);
       setInput('');
-      setUserMessageCount(0);
       setIsLoading(false);
     }
   }, [isOpen]);
@@ -54,7 +62,14 @@ export function Chatbot() {
 
     const userMessage: Message = { role: 'user', content: input };
     setMessages((prev) => [...prev, userMessage]);
-    setUserMessageCount(prev => prev + 1);
+    
+    // Increment and save the message count for non-premium users
+    if (!currentUser.isPremium) {
+      const newCount = userMessageCount + 1;
+      setUserMessageCount(newCount);
+      localStorage.setItem(`messageCount_${currentUser.id}`, newCount.toString());
+    }
+    
     setInput('');
     setIsLoading(true);
 
@@ -122,7 +137,7 @@ export function Chatbot() {
         <div className="flex-grow overflow-y-auto pr-4 -mr-4">
           <ScrollArea className="h-full">
             <div className="flex flex-col gap-4 py-4 pr-4">
-              {messages.length === 0 && (
+              {messages.length === 0 && !isLimitReached && (
                 <div className="flex items-start gap-3">
                   <div className="p-2 bg-primary/10 rounded-full">
                     <Bot className="h-5 w-5 text-primary" />
@@ -173,8 +188,8 @@ export function Chatbot() {
                  <div className="text-center p-4">
                     <Sparkles className="mx-auto h-6 w-6 text-yellow-500 mb-2" />
                     <p className="font-semibold">You've reached the message limit.</p>
-                    <p className="text-sm text-muted-foreground">Upgrade to Premium for unlimited AI access.</p>
-                    <Button className="mt-4" size="sm">Upgrade Now</Button>
+                    <p className="text-sm text-muted-foreground">Please contact support to upgrade to Premium for unlimited AI access.</p>
+                    <Button className="mt-4" size="sm">Contact Support</Button>
                 </div>
             ) : (
              <form onSubmit={handleSubmit} className="flex items-center gap-2">
