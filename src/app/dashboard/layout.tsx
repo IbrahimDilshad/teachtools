@@ -2,7 +2,7 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { 
   Bell, 
   Calendar, 
@@ -28,14 +28,11 @@ import {
 } from "@/components/ui/sidebar"
 import { DashboardHeader } from "@/components/dashboard/header"
 import { Chatbot } from "@/components/dashboard/chatbot"
-import { UserNav } from "@/components/dashboard/user-nav"
 import { useAuth } from "@/hooks/use-auth"
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
 import { Skeleton } from "@/components/ui/skeleton"
 import type { User as AppUser } from "@/lib/data"
 import { tutors } from "@/lib/data"
-
 
 const navItems = [
   { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -62,12 +59,26 @@ export default function DashboardLayout({
   const [currentUser, setCurrentUser] = useState<AppUser | null>(null)
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.push('/login');
-    } else if (user) {
-      // In a real app, you'd fetch this from your database
-      const appUser = tutors.find(t => t.email === user.email) || tutors.find(t => t.id === 'user1')!
-      setCurrentUser(appUser)
+    if (!loading) {
+      if (!user) {
+        router.push('/login');
+      } else {
+        const appUser = tutors.find(t => t.email === user.email)
+        if (appUser) {
+          setCurrentUser(appUser)
+        } else {
+          // Fallback for new users not in the static list, e.g., Google sign-in
+          const newUser: AppUser = {
+            id: user.uid,
+            name: user.displayName || user.email || 'New User',
+            email: user.email || 'no-email',
+            isPremium: false,
+            subjects: ['General'],
+            avatar: user.photoURL || 'https://placehold.co/40x40.png',
+          };
+          setCurrentUser(newUser);
+        }
+      }
     }
   }, [user, loading, router]);
 
@@ -80,11 +91,37 @@ export default function DashboardLayout({
 
   if (loading || !currentUser) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="space-y-4 w-full max-w-md p-4">
-          <Skeleton className="h-12 w-full" />
-          <Skeleton className="h-24 w-full" />
-          <Skeleton className="h-24 w-full" />
+      <div className="flex h-screen w-full">
+        <div className="hidden md:flex flex-col w-56 border-r">
+            <div className="flex flex-col gap-2 p-2">
+                <div className="flex items-center gap-2 p-2">
+                    <GraduationCap className="size-7 text-primary" />
+                    <Skeleton className="h-6 w-24" />
+                </div>
+                <div className="flex flex-col gap-1 p-2">
+                    <Skeleton className="h-8 w-full" />
+                    <Skeleton className="h-8 w-full" />
+                    <Skeleton className="h-8 w-full" />
+                    <Skeleton className="h-8 w-full" />
+                    <Skeleton className="h-8 w-full" />
+                    <Skeleton className="h-8 w-full" />
+                </div>
+            </div>
+            <div className="mt-auto flex flex-col gap-1 p-2">
+                <Skeleton className="h-8 w-full" />
+                <Skeleton className="h-8 w-full" />
+            </div>
+        </div>
+        <div className="flex-1 flex flex-col">
+            <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
+                <div className="w-full flex-1">
+                    <Skeleton className="h-6 w-48" />
+                </div>
+                <Skeleton className="h-9 w-9 rounded-full" />
+            </header>
+            <main className="flex-1 p-4 md:p-6 lg:p-8">
+              <Skeleton className="w-full h-full" />
+            </main>
         </div>
       </div>
     );
@@ -133,13 +170,11 @@ export default function DashboardLayout({
       </Sidebar>
       <SidebarInset>
         <div className="flex flex-col h-full">
-            <DashboardHeader title={getPageTitle()}>
-              <UserNav />
-            </DashboardHeader>
+            <DashboardHeader title={getPageTitle()} />
             <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto">
                 {children}
             </main>
-            <Chatbot />
+            {currentUser && <Chatbot user={currentUser} />}
         </div>
       </SidebarInset>
     </SidebarProvider>

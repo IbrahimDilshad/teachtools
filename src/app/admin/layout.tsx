@@ -1,3 +1,4 @@
+
 "use client"
 
 import Link from "next/link"
@@ -64,12 +65,35 @@ export default function AdminLayout({
 
   if (loading || !user || user.email !== adminEmail) {
     return (
-      <div className="flex items-center justify-center h-screen">
-          <div className="space-y-4 w-full max-w-md p-4">
-              <Skeleton className="h-12 w-full" />
-              <Skeleton className="h-24 w-full" />
-              <Skeleton className="h-24 w-full" />
+      <div className="flex h-screen w-full">
+        <div className="hidden md:flex flex-col w-56 border-r">
+          <div className="flex flex-col gap-2 p-2">
+             <div className="flex items-center gap-2 p-2">
+                <Shield className="size-7 text-primary" />
+                <div className="flex flex-col">
+                    <Skeleton className="h-5 w-24" />
+                    <Skeleton className="h-3 w-20 mt-1" />
+                </div>
+            </div>
+            <div className="flex flex-col gap-1 p-2">
+              <Skeleton className="h-8 w-full" />
+              <Skeleton className="h-8 w-full" />
+              <Skeleton className="h-8 w-full" />
+              <Skeleton className="h-8 w-full" />
+            </div>
           </div>
+        </div>
+        <div className="flex flex-col flex-1">
+          <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
+            <div className="w-full flex-1">
+              <Skeleton className="h-6 w-48" />
+            </div>
+            <Skeleton className="h-9 w-9 rounded-full" />
+          </header>
+          <main className="flex-1 p-4 md:p-6 lg:p-8">
+            <Skeleton className="h-full w-full" />
+          </main>
+        </div>
       </div>
     );
   }
@@ -106,9 +130,7 @@ export default function AdminLayout({
       </Sidebar>
       <SidebarInset>
         <div className="flex flex-col h-full">
-            <DashboardHeader title={getPageTitle()}>
-              <UserNav />
-            </DashboardHeader>
+            <DashboardHeader title={getPageTitle()} />
             <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto">
                 {children}
             </main>

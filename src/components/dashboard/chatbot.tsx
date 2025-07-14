@@ -14,11 +14,10 @@ import {
   SheetClose,
 } from '@/components/ui/sheet';
 import { Input } from '@/components/ui/input';
-import { currentUser } from '@/lib/data';
 import { useToast } from '@/hooks/use-toast';
 import { teachingAssistant } from '@/ai/flows/teaching-assistant';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useRouter } from 'next/navigation';
+import type { User as AppUser } from '@/lib/data';
 
 type Message = {
   role: 'user' | 'assistant';
@@ -27,7 +26,11 @@ type Message = {
 
 const MESSAGE_LIMIT = 50;
 
-export function Chatbot() {
+type ChatbotProps = {
+  user: AppUser;
+}
+
+export function Chatbot({ user }: ChatbotProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
@@ -35,15 +38,14 @@ export function Chatbot() {
   const [userMessageCount, setUserMessageCount] = useState(0);
   const { toast } = useToast();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
 
-  const isLimitReached = !currentUser.isPremium && userMessageCount >= MESSAGE_LIMIT;
+  const isLimitReached = !user.isPremium && userMessageCount >= MESSAGE_LIMIT;
 
   useEffect(() => {
     // Load message count from localStorage when component mounts
-    const savedCount = localStorage.getItem(`messageCount_${currentUser.id}`);
+    const savedCount = localStorage.getItem(`messageCount_${user.id}`);
     setUserMessageCount(savedCount ? parseInt(savedCount, 10) : 0);
-  }, []);
+  }, [user.id]);
 
   useEffect(() => {
     if (isOpen) {
@@ -73,10 +75,10 @@ export function Chatbot() {
     setMessages((prev) => [...prev, userMessage]);
     
     // Increment and save the message count for non-premium users
-    if (!currentUser.isPremium) {
+    if (!user.isPremium) {
       const newCount = userMessageCount + 1;
       setUserMessageCount(newCount);
-      localStorage.setItem(`messageCount_${currentUser.id}`, newCount.toString());
+      localStorage.setItem(`messageCount_${user.id}`, newCount.toString());
     }
     
     setInput('');
@@ -85,7 +87,7 @@ export function Chatbot() {
     try {
       const stream = await teachingAssistant({
         message: input,
-        subjects: currentUser.subjects,
+        subjects: user.subjects,
       });
 
       let assistantResponse = '';
@@ -158,7 +160,7 @@ export function Chatbot() {
                     <Bot className="h-5 w-5 text-primary" />
                   </div>
                   <div className="rounded-lg p-3 bg-muted">
-                    Hello! How can I help you with your {currentUser.subjects.join(' or ')} lessons today?
+                    Hello! How can I help you with your {user.subjects.join(' or ')} lessons today?
                   </div>
                 </div>
               )}
@@ -221,12 +223,12 @@ export function Chatbot() {
                 </Button>
             </form>
            )}
-           {!currentUser.isPremium && (
+           {!user.isPremium && (
             <div className="text-xs text-muted-foreground text-center mt-2">
                 {userMessageCount}/{MESSAGE_LIMIT} messages used.
             </div>
            )}
-            {currentUser.isPremium && (
+            {user.isPremium && (
             <div className="text-xs text-muted-foreground text-center mt-2 flex items-center justify-center gap-1">
                 <ShieldCheck className="w-3 h-3 text-accent" />
                 <span>Premium Member: Unlimited access.</span>
