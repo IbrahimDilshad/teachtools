@@ -1,10 +1,11 @@
+
 "use client"
 
 import Link from "next/link"
 import { GraduationCap } from "lucide-react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth"
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail } from "firebase/auth"
 import { auth } from "@/lib/firebase"
 
 import { Button } from "@/components/ui/button"
@@ -18,10 +19,21 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useToast } from "@/hooks/use-toast"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+  DialogFooter
+} from "@/components/ui/dialog"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [resetEmail, setResetEmail] = useState("")
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const { toast } = useToast()
@@ -62,6 +74,34 @@ export default function LoginPage() {
       setLoading(false)
     }
   }
+  
+  const handlePasswordReset = async () => {
+    if (!resetEmail) {
+      toast({
+        variant: "destructive",
+        title: "Email Required",
+        description: "Please enter your email address to reset your password.",
+      })
+      return;
+    }
+    setLoading(true);
+    try {
+      await sendPasswordResetEmail(auth, resetEmail);
+      toast({
+        title: "Password Reset Email Sent",
+        description: "Check your inbox for instructions to reset your password.",
+      });
+    } catch (error: any) {
+       toast({
+        variant: "destructive",
+        title: "Reset Failed",
+        description: "Could not send password reset email. Please check the email address and try again.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   const handleGoogleLogin = async () => {
     setLoading(true);
@@ -109,12 +149,38 @@ export default function LoginPage() {
             <div className="grid gap-2">
               <div className="flex items-center">
                 <Label htmlFor="password">Password</Label>
-                <Link
-                  href="#"
-                  className="ml-auto inline-block text-sm underline"
-                >
-                  Forgot your password?
-                </Link>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button type="button" className="ml-auto inline-block text-sm underline">
+                      Forgot your password?
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                      <DialogTitle>Reset Password</DialogTitle>
+                      <DialogDescription>
+                        Enter your email address and we'll send you a link to reset your password.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-2 py-4">
+                      <Label htmlFor="reset-email">Email</Label>
+                      <Input
+                        id="reset-email"
+                        type="email"
+                        placeholder="m@example.com"
+                        value={resetEmail}
+                        onChange={(e) => setResetEmail(e.target.value)}
+                      />
+                    </div>
+                    <DialogFooter>
+                      <DialogClose asChild>
+                         <Button type="button" onClick={handlePasswordReset} disabled={loading}>
+                          {loading ? "Sending..." : "Send Reset Link"}
+                        </Button>
+                      </DialogClose>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               </div>
               <Input 
                 id="password" 

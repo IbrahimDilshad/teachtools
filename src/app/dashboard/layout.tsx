@@ -1,3 +1,4 @@
+
 "use client"
 
 import Link from "next/link"
@@ -29,10 +30,11 @@ import { DashboardHeader } from "@/components/dashboard/header"
 import { Chatbot } from "@/components/dashboard/chatbot"
 import { UserNav } from "@/components/dashboard/user-nav"
 import { useAuth } from "@/hooks/use-auth"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Skeleton } from "@/components/ui/skeleton"
-import { currentUser } from "@/lib/data"
+import type { User as AppUser } from "@/lib/data"
+import { tutors } from "@/lib/data"
 
 
 const navItems = [
@@ -57,10 +59,15 @@ export default function DashboardLayout({
   const pathname = usePathname()
   const router = useRouter()
   const { user, loading } = useAuth()
+  const [currentUser, setCurrentUser] = useState<AppUser | null>(null)
 
   useEffect(() => {
     if (!loading && !user) {
       router.push('/login');
+    } else if (user) {
+      // In a real app, you'd fetch this from your database
+      const appUser = tutors.find(t => t.email === user.email) || tutors.find(t => t.id === 'user1')!
+      setCurrentUser(appUser)
     }
   }, [user, loading, router]);
 
@@ -71,7 +78,7 @@ export default function DashboardLayout({
     return currentItem ? currentItem.label : "Dashboard";
   };
 
-  if (loading || !user) {
+  if (loading || !currentUser) {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="space-y-4 w-full max-w-md p-4">
