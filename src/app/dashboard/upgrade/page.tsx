@@ -7,7 +7,7 @@ import {
   CardFooter,
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Check } from "lucide-react"
+import { Check, Mail } from "lucide-react"
 
 const premiumFeatures = [
   "Unlimited AI Assistant Usage",
@@ -18,7 +18,7 @@ const premiumFeatures = [
 
 export default function UpgradePage() {
   return (
-    <div className="flex justify-center items-center h-full">
+    <div className="flex justify-center items-start pt-10 h-full">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold">Go Premium</CardTitle>
@@ -32,7 +32,7 @@ export default function UpgradePage() {
             <span className="text-4xl font-bold">$10</span>
             <span className="text-muted-foreground">/month</span>
           </div>
-          <ul className="space-y-3">
+          <ul className="space-y-3 mb-8">
             {premiumFeatures.map((feature, index) => (
               <li key={index} className="flex items-center gap-3">
                 <div className="p-1 bg-accent rounded-full">
@@ -42,10 +42,21 @@ export default function UpgradePage() {
               </li>
             ))}
           </ul>
+           <Card className="bg-muted/50">
+             <CardContent className="p-4 text-center">
+                <h4 className="font-semibold mb-2">How to Upgrade</h4>
+                <p className="text-sm text-muted-foreground">
+                    To get premium access, please contact us. We will send you a secure Payoneer payment link. Once paid, we will activate your premium membership.
+                </p>
+             </CardContent>
+           </Card>
         </CardContent>
         <CardFooter>
-          <Button className="w-full" size="lg">
-            Upgrade Now & Get Paid
+          <Button className="w-full" size="lg" asChild>
+            <a href="mailto:ibrahimzdilshad@gmail.com">
+                <Mail className="mr-2 h-4 w-4" />
+                Contact Us to Upgrade
+            </a>
           </Button>
         </CardFooter>
       </Card>
