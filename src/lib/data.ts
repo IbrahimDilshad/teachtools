@@ -1,3 +1,4 @@
+
 export type User = {
     id: string;
     name: string;
@@ -82,3 +83,16 @@ export type Resource = {
 };
 
 export const resources: Resource[] = [];
+
+export type UpgradeRequest = {
+  id: string;
+  email: string;
+  requestDate: string;
+  status: 'pending' | 'completed';
+};
+
+export const upgradeRequests: UpgradeRequest[] = [
+  { id: 'req1', email: 'bayo@example.com', requestDate: '2024-07-28', status: 'pending' },
+  { id: 'req2', email: 'mei@example.com', requestDate: '2024-07-27', status: 'pending' },
+  { id: 'req3', email: 'user@example.com', requestDate: '2024-07-26', status: 'completed' },
+];

@@ -1,3 +1,7 @@
+
+"use client"
+
+import { useState } from "react"
 import {
   Card,
   CardContent,
@@ -7,7 +11,11 @@ import {
   CardFooter,
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Check, Mail } from "lucide-react"
+import { Check, Mail, PartyPopper } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { useAuth } from "@/hooks/use-auth"
+import { useToast } from "@/hooks/use-toast"
 
 const premiumFeatures = [
   "Unlimited AI Assistant Usage",
@@ -17,6 +25,19 @@ const premiumFeatures = [
 ]
 
 export default function UpgradePage() {
+  const { user } = useAuth()
+  const { toast } = useToast()
+  const [submitted, setSubmitted] = useState(false)
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    toast({
+        title: "Request Sent!",
+        description: "We've received your upgrade request. We'll email you the payment details shortly.",
+    })
+    setSubmitted(true)
+  }
+
   return (
     <div className="flex justify-center items-start pt-10 h-full">
       <Card className="w-full max-w-md">
@@ -42,23 +63,41 @@ export default function UpgradePage() {
               </li>
             ))}
           </ul>
-           <Card className="bg-muted/50">
-             <CardContent className="p-4 text-center">
-                <h4 className="font-semibold mb-2">How to Upgrade</h4>
-                <p className="text-sm text-muted-foreground">
-                    To get premium access, please contact us. We will arrange payment via JazzCash, EasyPaisa, or another local method. Once paid, we will activate your premium membership.
-                </p>
-             </CardContent>
-           </Card>
+           {submitted ? (
+            <Card className="bg-muted/50">
+                <CardContent className="p-6 text-center">
+                    <PartyPopper className="h-10 w-10 text-primary mx-auto mb-4" />
+                    <h4 className="font-semibold text-xl mb-2">Request Received!</h4>
+                    <p className="text-sm text-muted-foreground">
+                        Thank you! We will send payment details to <strong>{user?.email}</strong> shortly. Once paid, we will activate your premium membership.
+                    </p>
+                </CardContent>
+            </Card>
+           ) : (
+             <form onSubmit={handleSubmit}>
+                <Card className="bg-muted/50">
+                    <CardHeader>
+                        <h4 className="font-semibold text-center">Ready to Upgrade?</h4>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <p className="text-sm text-muted-foreground text-center">
+                            Enter your email below. We'll send you payment details via JazzCash, EasyPaisa, or another local method.
+                        </p>
+                        <div className="grid gap-2">
+                            <Label htmlFor="email" className="sr-only">Email</Label>
+                            <Input id="email" type="email" defaultValue={user?.email || ""} required readOnly />
+                        </div>
+                    </CardContent>
+                    <CardFooter>
+                        <Button className="w-full" type="submit">
+                            <Mail className="mr-2 h-4 w-4" />
+                            Request Payment Details
+                        </Button>
+                    </CardFooter>
+                </Card>
+             </form>
+           )}
         </CardContent>
-        <CardFooter>
-          <Button className="w-full" size="lg" asChild>
-            <a href="mailto:ibrahimzdilshad@gmail.com">
-                <Mail className="mr-2 h-4 w-4" />
-                Contact Us to Upgrade
-            </a>
-          </Button>
-        </CardFooter>
       </Card>
     </div>
   )
