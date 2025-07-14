@@ -75,7 +75,7 @@ export default function LandingPage() {
                              <Link href="/login" className="text-lg font-medium">Log In</Link>
                          </SheetClose>
                          <SheetClose asChild>
-                            <Button asChild className="w-full">
+                            <Button asChild className="w-full max-w-[200px]">
                                 <Link href="/login">Get Started Free</Link>
                             </Button>
                          </SheetClose>
@@ -152,8 +152,8 @@ export default function LandingPage() {
       </main>
 
       <footer className="bg-background border-t">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 flex justify-between items-center">
-          <p className="text-muted-foreground text-sm">&copy; {new Date().getFullYear()} TeachTools. All rights reserved.</p>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-muted-foreground text-sm text-center sm:text-left">&copy; {new Date().getFullYear()} TeachTools. All rights reserved.</p>
           <div className="flex items-center gap-2">
             <GraduationCap className="h-5 w-5 text-muted-foreground" />
             <span className="font-bold font-headline text-muted-foreground">TeachTools</span>
