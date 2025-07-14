@@ -35,7 +35,7 @@ const teachingAssistantFlow = ai.defineFlow(
   },
   async (input) => {
     const { stream } = ai.generateStream({
-        model: 'gemini-1.5-flash-latest',
+        model: 'googleai/gemini-1.5-flash',
         prompt: `You are a helpful AI assistant for a tutor. The tutor teaches the following subjects: {{subjects}}. Help them with their request: {{message}}. Provide concise, practical, and helpful information.`,
         input,
     });
