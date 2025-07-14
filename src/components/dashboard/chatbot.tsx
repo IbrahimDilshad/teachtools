@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Bot, Loader2, Send, Sparkles, X } from 'lucide-react';
+import { Bot, Loader2, Send, Sparkles, X, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
@@ -23,17 +23,24 @@ type Message = {
   content: string;
 };
 
+const MESSAGE_LIMIT = 50;
+
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [userMessageCount, setUserMessageCount] = useState(0);
   const { toast } = useToast();
+
+  const isLimitReached = !currentUser.isPremium && userMessageCount >= MESSAGE_LIMIT;
 
   useEffect(() => {
     if (isOpen) {
       setMessages([]);
       setInput('');
+      setUserMessageCount(0);
+      setIsLoading(false);
     }
   }, [isOpen]);
 
@@ -43,10 +50,11 @@ export function Chatbot() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim() || isLimitReached) return;
 
     const userMessage: Message = { role: 'user', content: input };
     setMessages((prev) => [...prev, userMessage]);
+    setUserMessageCount(prev => prev + 1);
     setInput('');
     setIsLoading(true);
 
@@ -89,16 +97,7 @@ export function Chatbot() {
   };
 
   const handleTriggerClick = () => {
-    if (currentUser.isPremium) {
-      setIsOpen(true);
-    } else {
-      toast({
-        variant: 'destructive',
-        title: 'Premium Feature',
-        description:
-          'This feature is only for Premium Tutors. Upgrade now to unlock your AI Assistant!',
-      });
-    }
+    setIsOpen(true);
   };
 
   return (
@@ -169,17 +168,16 @@ export function Chatbot() {
             </div>
           </ScrollArea>
         </div>
-        <div className="mt-auto">
-            {!currentUser.isPremium && (
-                 <div className="text-center p-4 border-t">
+        <div className="mt-auto border-t pt-4">
+            {isLimitReached ? (
+                 <div className="text-center p-4">
                     <Sparkles className="mx-auto h-6 w-6 text-yellow-500 mb-2" />
-                    <p className="font-semibold">This is a Premium Feature</p>
-                    <p className="text-sm text-muted-foreground">Upgrade now to unlock your AI Assistant!</p>
+                    <p className="font-semibold">You've reached the message limit.</p>
+                    <p className="text-sm text-muted-foreground">Upgrade to Premium for unlimited AI access.</p>
                     <Button className="mt-4" size="sm">Upgrade Now</Button>
                 </div>
-            )}
-           {currentUser.isPremium && (
-             <form onSubmit={handleSubmit} className="flex items-center gap-2 border-t pt-4">
+            ) : (
+             <form onSubmit={handleSubmit} className="flex items-center gap-2">
                 <Input
                     value={input}
                     onChange={handleInputChange}
@@ -191,6 +189,17 @@ export function Chatbot() {
                     <Send className="h-4 w-4" />
                 </Button>
             </form>
+           )}
+           {!currentUser.isPremium && (
+            <div className="text-xs text-muted-foreground text-center mt-2">
+                {userMessageCount}/{MESSAGE_LIMIT} messages used.
+            </div>
+           )}
+            {currentUser.isPremium && (
+            <div className="text-xs text-muted-foreground text-center mt-2 flex items-center justify-center gap-1">
+                <ShieldCheck className="w-3 h-3 text-accent" />
+                <span>Premium Member: Unlimited access.</span>
+            </div>
            )}
         </div>
       </SheetContent>

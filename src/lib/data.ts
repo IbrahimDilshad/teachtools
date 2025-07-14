@@ -4,15 +4,25 @@ export type User = {
     email: string;
     isPremium: boolean;
     subjects: string[];
+    avatar: string;
 }
 
 export const currentUser: User = {
     id: 'user1',
     name: 'Ali',
     email: 'ali@example.com',
-    isPremium: true,
+    isPremium: false,
     subjects: ['Physics', 'Math'],
+    avatar: 'https://placehold.co/40x40.png',
 }
+
+export const tutors: User[] = [
+    { id: 'tutor1', name: 'Zainab Ahmed', email: 'zainab@example.com', isPremium: true, subjects: ['Chemistry', 'Biology'], avatar: 'https://placehold.co/40x40.png' },
+    { id: 'tutor2', name: 'Babatunde Adebayo', email: 'bayo@example.com', isPremium: false, subjects: ['History', 'Government'], avatar: 'https://placehold.co/40x40.png' },
+    { id: 'tutor3', name: 'Carlos Santos', email: 'carlos@example.com', isPremium: true, subjects: ['Spanish', 'French'], avatar: 'https://placehold.co/40x40.png' },
+    { id: 'tutor4', name: 'Mei Lin', email: 'mei@example.com', isPremium: false, subjects: ['Mandarin', 'Art'], avatar: 'https://placehold.co/40x40.png' },
+    { id: 'user1', name: 'Ali (You)', email: 'ali@example.com', isPremium: false, subjects: ['Physics', 'Math'], avatar: 'https://placehold.co/40x40.png' },
+]
 
 export type Student = {
   id: string;
