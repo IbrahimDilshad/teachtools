@@ -115,14 +115,14 @@ export default function LandingPage() {
              <div className="absolute top-0 -left-4 w-72 h-72 bg-accent/30 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
             <div className="absolute top-0 -right-4 w-72 h-72 bg-primary/30 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
             <div className="absolute -bottom-8 left-20 w-72 h-72 bg-secondary/30 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-            <div className="relative shadow-2xl rounded-xl">
+            <div className="relative shadow-2xl rounded-xl w-full">
               <Image 
                 src="https://placehold.co/1200x675.png"
                 width={1200}
                 height={675}
                 alt="TeachTools Dashboard Preview"
                 data-ai-hint="dashboard computer"
-                className="rounded-lg border-4 border-background"
+                className="rounded-lg border-4 border-background w-full h-auto"
               />
             </div>
           </div>
