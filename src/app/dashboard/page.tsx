@@ -31,7 +31,7 @@ export default function Dashboard() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
@@ -105,7 +105,7 @@ export default function Dashboard() {
                 <TableRow>
                   <TableHead>Student</TableHead>
                   <TableHead>Class</TableHead>
-                  <TableHead className="min-w-[150px]">Date & Time</TableHead>
+                  <TableHead>Date & Time</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -115,7 +115,7 @@ export default function Dashboard() {
                       <div className="font-medium whitespace-nowrap">{c.studentName}</div>
                     </TableCell>
                     <TableCell className="whitespace-nowrap">{c.title}</TableCell>
-                    <TableCell>{c.date} @ {c.startTime}</TableCell>
+                    <TableCell className="whitespace-nowrap">{c.date} @ {c.startTime}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -144,7 +144,7 @@ export default function Dashboard() {
                   <TableHead>Student</TableHead>
                   <TableHead>Amount</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead className="min-w-[100px]">Due Date</TableHead>
+                  <TableHead>Due Date</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -162,7 +162,7 @@ export default function Dashboard() {
                           {p.status}
                       </Badge>
                     </TableCell>
-                    <TableCell>{p.dueDate}</TableCell>
+                    <TableCell className="whitespace-nowrap">{p.dueDate}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

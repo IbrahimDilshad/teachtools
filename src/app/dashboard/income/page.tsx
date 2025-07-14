@@ -102,8 +102,8 @@ export default function IncomePage() {
                 <TableHead>Student</TableHead>
                 <TableHead>Amount</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead className="min-w-[120px]">Due Date</TableHead>
-                <TableHead className="min-w-[120px]">Paid On</TableHead>
+                <TableHead>Due Date</TableHead>
+                <TableHead>Paid On</TableHead>
                 <TableHead>
                   <span className="sr-only">Actions</span>
                 </TableHead>
@@ -122,8 +122,8 @@ export default function IncomePage() {
                       {payment.status}
                     </Badge>
                   </TableCell>
-                  <TableCell>{payment.dueDate}</TableCell>
-                  <TableCell>{payment.paidDate || 'N/A'}</TableCell>
+                  <TableCell className="whitespace-nowrap">{payment.dueDate}</TableCell>
+                  <TableCell className="whitespace-nowrap">{payment.paidDate || 'N/A'}</TableCell>
                   <TableCell>
                     <Button variant="outline" size="sm" className="whitespace-nowrap">Mark as Paid</Button>
                   </TableCell>

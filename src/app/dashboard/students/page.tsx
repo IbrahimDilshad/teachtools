@@ -86,7 +86,7 @@ export default function StudentsPage() {
                 </TableHead>
                 <TableHead>Name</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead className="min-w-[150px]">
+                <TableHead>
                   Last Lesson
                 </TableHead>
                 <TableHead>
@@ -116,7 +116,7 @@ export default function StudentsPage() {
                       {student.status}
                     </Badge>
                   </TableCell>
-                  <TableCell className="hidden md:table-cell">
+                  <TableCell className="hidden md:table-cell whitespace-nowrap">
                     {student.lastLesson}
                   </TableCell>
                   <TableCell>
