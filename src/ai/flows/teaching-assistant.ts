@@ -36,10 +36,7 @@ const teachingAssistantFlow = ai.defineFlow(
     outputSchema: z.any(),
   },
   async (input) => {
-    const { stream } = ai.generateStream({
-        prompt: teachingAssistantPrompt,
-        input,
-    });
+    const { stream } = await teachingAssistantPrompt.generateStream(input);
     
     const encoder = new TextEncoder();
     const readableStream = new ReadableStream({
