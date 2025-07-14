@@ -11,7 +11,6 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
-import { generateStream } from 'genkit/generate';
 
 const TeachingAssistantInputSchema = z.object({
   message: z.string().describe('The user\'s message or question.'),
@@ -28,11 +27,6 @@ export async function teachingAssistant(input: TeachingAssistantInput) {
     return teachingAssistantFlow(input);
 }
 
-
-const prompt = `You are a helpful AI assistant for a tutor. The tutor teaches the following subjects: {{subjects}}.
-Help them with their request: {{message}}.
-Provide concise, practical, and helpful information.`;
-
 const teachingAssistantFlow = ai.defineFlow(
   {
     name: 'teachingAssistantFlow',
@@ -40,10 +34,11 @@ const teachingAssistantFlow = ai.defineFlow(
     outputSchema: z.any(),
   },
   async (input) => {
-    return generateStream({
-        model: 'googleai/gemini-2.0-flash',
-        prompt: prompt,
-        input
+    const { stream } = ai.generateStream({
+        model: 'gemini-1.5-flash',
+        prompt: `You are a helpful AI assistant for a tutor. The tutor teaches the following subjects: {{subjects}}. Help them with their request: {{message}}. Provide concise, practical, and helpful information.`,
+        input,
     });
+    return stream;
   }
 );

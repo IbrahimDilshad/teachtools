@@ -44,7 +44,7 @@ export function Chatbot() {
     setIsLoading(true);
 
     try {
-      const { stream, response } = await teachingAssistant({
+      const stream = await teachingAssistant({
         message: input,
         subjects: currentUser.subjects,
       });
@@ -60,7 +60,6 @@ export function Chatbot() {
           return newMessages;
         });
       }
-      await response;
     } catch (error) {
       console.error('Error with teaching assistant:', error);
       toast({
@@ -68,9 +67,7 @@ export function Chatbot() {
         title: 'AI Assistant Error',
         description: 'Could not get a response. Please try again.',
       });
-      setMessages((prev) =>
-        prev.slice(0, prev.length - (prev[prev.length - 1].role === 'assistant' ? 2 : 1))
-      );
+       setMessages((prev) => prev.slice(0, -2)); // Remove user message and empty assistant message
     } finally {
       setIsLoading(false);
     }
@@ -134,7 +131,7 @@ export function Chatbot() {
                   </div>
                 </div>
               ))}
-              {isLoading && (
+              {isLoading && messages[messages.length -1]?.role !== 'assistant' && (
                 <div className="flex items-start gap-3">
                     <div className="p-2 bg-primary/10 rounded-full">
                       <Bot className="h-5 w-5 text-primary" />
