@@ -33,10 +33,30 @@ export default function LoginPage() {
       await signInWithEmailAndPassword(auth, email, password)
       router.push("/dashboard")
     } catch (error: any) {
+      let title = "Login Failed"
+      let description = "An unexpected error occurred. Please try again."
+
+      switch (error.code) {
+        case "auth/user-not-found":
+        case "auth/wrong-password":
+        case "auth/invalid-credential":
+          title = "Invalid Credentials"
+          description = "The email or password you entered is incorrect. Please try again."
+          break;
+        case "auth/invalid-email":
+          title = "Invalid Email"
+          description = "Please enter a valid email address."
+          break;
+        case "auth/too-many-requests":
+          title = "Too Many Attempts"
+          description = "Access to this account has been temporarily disabled. Please reset your password or try again later."
+          break;
+      }
+
       toast({
         variant: "destructive",
-        title: "Login Failed",
-        description: error.message,
+        title: title,
+        description: description,
       })
     } finally {
       setLoading(false)
@@ -53,7 +73,7 @@ export default function LoginPage() {
         toast({
             variant: "destructive",
             title: "Google Login Failed",
-            description: error.message,
+            description: "Could not log in with Google. Please try again.",
         });
     } finally {
         setLoading(false);

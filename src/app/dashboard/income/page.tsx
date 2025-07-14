@@ -1,3 +1,5 @@
+"use client"
+
 import { PlusCircle } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -26,6 +28,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -36,9 +39,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { useToast } from "@/hooks/use-toast"
 
 export default function IncomePage() {
+  const { toast } = useToast()
   const totalPaid = payments.filter(p => p.status === 'paid').reduce((sum, p) => sum + p.amount, 0);
+
+  const handleAddIncome = () => {
+    toast({
+        title: "Income Added",
+        description: "The new income record has been saved.",
+    });
+  }
   
   return (
     <Card>
@@ -89,7 +101,9 @@ export default function IncomePage() {
               </div>
             </div>
             <DialogFooter>
-              <Button>Save Record</Button>
+                <DialogClose asChild>
+                    <Button onClick={handleAddIncome}>Save Record</Button>
+                </DialogClose>
             </DialogFooter>
           </DialogContent>
         </Dialog>

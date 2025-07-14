@@ -26,6 +26,7 @@ import { DashboardHeader } from "@/components/dashboard/header"
 import { useAuth } from "@/hooks/use-auth"
 import { useEffect } from "react"
 import { Skeleton } from "@/components/ui/skeleton"
+import { UserNav } from "@/components/dashboard/user-nav"
 
 const navItems = [
   { href: "/admin", icon: BarChart3, label: "Summary" },
@@ -48,7 +49,9 @@ export default function AdminLayout({
 
   useEffect(() => {
     if (!loading) {
-      if (!user || user.email !== adminEmail) {
+      if (!user) {
+        router.push('/login');
+      } else if (user.email !== adminEmail) {
         router.push('/dashboard');
       }
     }
@@ -103,7 +106,9 @@ export default function AdminLayout({
       </Sidebar>
       <SidebarInset>
         <div className="flex flex-col h-full">
-            <DashboardHeader title={getPageTitle()} />
+            <DashboardHeader title={getPageTitle()}>
+              <UserNav />
+            </DashboardHeader>
             <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto">
                 {children}
             </main>

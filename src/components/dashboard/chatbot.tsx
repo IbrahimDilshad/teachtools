@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Bot, Loader2, Send, Sparkles, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -29,6 +29,13 @@ export function Chatbot() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (isOpen) {
+      setMessages([]);
+      setInput('');
+    }
+  }, [isOpen]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
@@ -116,6 +123,16 @@ export function Chatbot() {
         <div className="flex-grow overflow-y-auto pr-4 -mr-4">
           <ScrollArea className="h-full">
             <div className="flex flex-col gap-4 py-4 pr-4">
+              {messages.length === 0 && (
+                <div className="flex items-start gap-3">
+                  <div className="p-2 bg-primary/10 rounded-full">
+                    <Bot className="h-5 w-5 text-primary" />
+                  </div>
+                  <div className="rounded-lg p-3 bg-muted">
+                    Hello! How can I help you with your {currentUser.subjects.join(' or ')} lessons today?
+                  </div>
+                </div>
+              )}
               {messages.map((msg, index) => (
                 <div
                   key={index}

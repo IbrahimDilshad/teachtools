@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/sidebar"
 import { DashboardHeader } from "@/components/dashboard/header"
 import { Chatbot } from "@/components/dashboard/chatbot"
+import { UserNav } from "@/components/dashboard/user-nav"
 
 const navItems = [
   { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -98,7 +99,9 @@ export default function DashboardLayout({
       </Sidebar>
       <SidebarInset>
         <div className="flex flex-col h-full">
-            <DashboardHeader title={getPageTitle()} />
+            <DashboardHeader title={getPageTitle()}>
+              <UserNav />
+            </DashboardHeader>
             <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto">
                 {children}
             </main>

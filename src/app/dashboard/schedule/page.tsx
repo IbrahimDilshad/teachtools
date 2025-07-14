@@ -1,3 +1,5 @@
+"use client"
+
 import { PlusCircle } from "lucide-react"
 import {
   Card,
@@ -16,12 +18,23 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
+import { useToast } from "@/hooks/use-toast"
 
 export default function SchedulePage() {
+  const { toast } = useToast()
+
+  const handleCreateClass = () => {
+    toast({
+      title: "Class Created",
+      description: "The new class has been added to your schedule.",
+    })
+  }
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
@@ -74,7 +87,9 @@ export default function SchedulePage() {
               </div>
             </div>
             <DialogFooter>
-              <Button type="submit">Create Class</Button>
+              <DialogClose asChild>
+                <Button type="submit" onClick={handleCreateClass}>Create Class</Button>
+              </DialogClose>
             </DialogFooter>
           </DialogContent>
         </Dialog>

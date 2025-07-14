@@ -34,10 +34,28 @@ export default function SignupPage() {
       await createUserWithEmailAndPassword(auth, email, password)
       router.push("/dashboard")
     } catch (error: any) {
+      let title = "Sign-up Failed"
+      let description = "An unexpected error occurred. Please try again."
+      
+      switch (error.code) {
+        case "auth/email-already-in-use":
+            title = "Email Already in Use"
+            description = "An account with this email already exists. Please log in instead."
+            break;
+        case "auth/invalid-email":
+            title = "Invalid Email"
+            description = "Please enter a valid email address."
+            break;
+        case "auth/weak-password":
+            title = "Weak Password"
+            description = "Your password must be at least 6 characters long."
+            break;
+      }
+
       toast({
         variant: "destructive",
-        title: "Sign-up Failed",
-        description: error.message,
+        title: title,
+        description: description,
       })
     } finally {
       setLoading(false)

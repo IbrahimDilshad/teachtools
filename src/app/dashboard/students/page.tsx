@@ -1,3 +1,5 @@
+"use client"
+
 import Image from "next/image"
 import { MoreHorizontal, PlusCircle } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
@@ -17,14 +19,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -32,13 +26,36 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { students } from "@/lib/data"
+import { useToast } from "@/hooks/use-toast"
+import { useState } from "react"
 
 export default function StudentsPage() {
+  const { toast } = useToast()
+  const [isAddStudentOpen, setAddStudentOpen] = useState(false);
+  const [isLogProgressOpen, setLogProgressOpen] = useState(false);
+
+  const handleAddStudent = () => {
+    toast({
+        title: "Student Added",
+        description: "The new student has been saved successfully.",
+    })
+    setAddStudentOpen(false);
+  }
+
+  const handleLogProgress = () => {
+     toast({
+        title: "Progress Logged",
+        description: "The student's progress has been saved.",
+    })
+    setLogProgressOpen(false)
+  }
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
@@ -48,7 +65,7 @@ export default function StudentsPage() {
             Manage your students and track their progress.
             </CardDescription>
         </div>
-        <Dialog>
+        <Dialog open={isAddStudentOpen} onOpenChange={setAddStudentOpen}>
             <DialogTrigger asChild>
                 <Button size="sm" className="gap-1 whitespace-nowrap">
                     <PlusCircle className="h-4 w-4" />
@@ -71,7 +88,7 @@ export default function StudentsPage() {
                     </div>
                 </div>
                 <DialogFooter>
-                    <Button>Save Student</Button>
+                    <Button onClick={handleAddStudent}>Save Student</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
@@ -120,7 +137,7 @@ export default function StudentsPage() {
                     {student.lastLesson}
                   </TableCell>
                   <TableCell>
-                    <Dialog>
+                    <Dialog open={isLogProgressOpen} onOpenChange={setLogProgressOpen}>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button
@@ -162,7 +179,7 @@ export default function StudentsPage() {
                           </div>
                           <DialogFooter>
                               <Button variant="outline">Export Report</Button>
-                              <Button>Save Log</Button>
+                              <Button onClick={handleLogProgress}>Save Log</Button>
                           </DialogFooter>
                       </DialogContent>
                     </Dialog>
