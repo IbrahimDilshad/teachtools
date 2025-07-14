@@ -21,11 +21,11 @@ import {
 } from "@/components/ui/table"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
-import { tutors } from "@/lib/data"
+import { tutors as initialTutors } from "@/lib/data"
 import { useToast } from "@/hooks/use-toast"
 
 export default function AdminTutorsPage() {
-  const [allTutors, setAllTutors] = useState(tutors)
+  const [allTutors, setAllTutors] = useState(initialTutors)
   const [searchTerm, setSearchTerm] = useState("")
   const { toast } = useToast()
 
@@ -77,35 +77,43 @@ export default function AdminTutorsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredTutors.map((tutor) => (
-                <TableRow key={tutor.id}>
-                  <TableCell className="font-medium flex items-center gap-3">
-                     <Image
-                        alt="Tutor avatar"
-                        className="aspect-square rounded-full object-cover"
-                        height="32"
-                        src={tutor.avatar}
-                        width="32"
-                        data-ai-hint="person avatar"
-                    />
-                    {tutor.name}
-                  </TableCell>
-                  <TableCell>{tutor.email}</TableCell>
-                  <TableCell>{tutor.subjects.join(", ")}</TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex items-center justify-end gap-2">
-                        <Label htmlFor={`premium-${tutor.id}`} className="sr-only">
-                            Premium
-                        </Label>
-                        <Switch
-                            id={`premium-${tutor.id}`}
-                            checked={tutor.isPremium}
-                            onCheckedChange={(checked) => handlePremiumToggle(tutor.id, checked)}
-                        />
-                    </div>
+              {filteredTutors.length > 0 ? (
+                filteredTutors.map((tutor) => (
+                  <TableRow key={tutor.id}>
+                    <TableCell className="font-medium flex items-center gap-3">
+                       <Image
+                          alt="Tutor avatar"
+                          className="aspect-square rounded-full object-cover"
+                          height="32"
+                          src={tutor.avatar}
+                          width="32"
+                          data-ai-hint="person avatar"
+                      />
+                      {tutor.name}
+                    </TableCell>
+                    <TableCell>{tutor.email}</TableCell>
+                    <TableCell>{tutor.subjects.join(", ")}</TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end gap-2">
+                          <Label htmlFor={`premium-${tutor.id}`} className="sr-only">
+                              Premium
+                          </Label>
+                          <Switch
+                              id={`premium-${tutor.id}`}
+                              checked={tutor.isPremium}
+                              onCheckedChange={(checked) => handlePremiumToggle(tutor.id, checked)}
+                          />
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={4} className="h-24 text-center">
+                    No tutors found.
                   </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </div>

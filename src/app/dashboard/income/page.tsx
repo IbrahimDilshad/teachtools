@@ -1,3 +1,4 @@
+
 "use client"
 
 import { PlusCircle } from "lucide-react"
@@ -109,52 +110,109 @@ export default function IncomePage() {
         </Dialog>
       </CardHeader>
       <CardContent>
-        <div className="overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Student</TableHead>
-                <TableHead>Amount</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Due Date</TableHead>
-                <TableHead>Paid On</TableHead>
-                <TableHead>
-                  <span className="sr-only">Actions</span>
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {payments.map(payment => (
-                <TableRow key={payment.id}>
-                  <TableCell className="font-medium whitespace-nowrap">{payment.studentName}</TableCell>
-                  <TableCell>${payment.amount.toFixed(2)}</TableCell>
-                  <TableCell>
-                    <Badge 
-                      variant={payment.status === 'paid' ? 'default' : payment.status === 'unpaid' ? 'secondary' : 'destructive'}
-                      className={payment.status === 'paid' ? 'bg-accent text-accent-foreground' : ''}
-                    >
-                      {payment.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="whitespace-nowrap">{payment.dueDate}</TableCell>
-                  <TableCell className="whitespace-nowrap">{payment.paidDate || 'N/A'}</TableCell>
-                  <TableCell>
-                    <Button variant="outline" size="sm" className="whitespace-nowrap">Mark as Paid</Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+        {payments.length > 0 ? (
+            <>
+                <div className="overflow-x-auto">
+                <Table>
+                    <TableHeader>
+                    <TableRow>
+                        <TableHead>Student</TableHead>
+                        <TableHead>Amount</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Due Date</TableHead>
+                        <TableHead>Paid On</TableHead>
+                        <TableHead>
+                        <span className="sr-only">Actions</span>
+                        </TableHead>
+                    </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                    {payments.map(payment => (
+                        <TableRow key={payment.id}>
+                        <TableCell className="font-medium whitespace-nowrap">{payment.studentName}</TableCell>
+                        <TableCell>${payment.amount.toFixed(2)}</TableCell>
+                        <TableCell>
+                            <Badge 
+                            variant={payment.status === 'paid' ? 'default' : payment.status === 'unpaid' ? 'secondary' : 'destructive'}
+                            className={payment.status === 'paid' ? 'bg-accent text-accent-foreground' : ''}
+                            >
+                            {payment.status}
+                            </Badge>
+                        </TableCell>
+                        <TableCell className="whitespace-nowrap">{payment.dueDate}</TableCell>
+                        <TableCell className="whitespace-nowrap">{payment.paidDate || 'N/A'}</TableCell>
+                        <TableCell>
+                            <Button variant="outline" size="sm" className="whitespace-nowrap">Mark as Paid</Button>
+                        </TableCell>
+                        </TableRow>
+                    ))}
+                    </TableBody>
+                </Table>
+                </div>
+                <CardFooter className="flex-col sm:flex-row items-start sm:items-center sm:justify-between gap-4 mt-6 p-0">
+                    <div className="text-xs text-muted-foreground">
+                    Showing <strong>1-{payments.length}</strong> of <strong>{payments.length}</strong> payments
+                    </div>
+                    <div className="font-semibold">
+                    Total Paid (July): ${totalPaid.toFixed(2)}
+                    </div>
+                </CardFooter>
+            </>
+        ) : (
+            <div className="flex flex-col items-center justify-center text-center p-10 border-dashed border-2 rounded-lg">
+                <h3 className="text-xl font-semibold">No Payments Logged</h3>
+                <p className="text-muted-foreground mt-2 mb-4">
+                    Add your first payment record to see it here.
+                </p>
+                <Dialog>
+                    <DialogTrigger asChild>
+                        <Button size="sm" className="gap-1">
+                        <PlusCircle className="h-4 w-4" />
+                        Add Income
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                        <DialogTitle>Add Income Record</DialogTitle>
+                        <DialogDescription>Manually add a new payment record.</DialogDescription>
+                        </DialogHeader>
+                        <div className="grid gap-4 py-4">
+                        <div className="grid gap-2">
+                            <Label htmlFor="student-name-2">Student Name</Label>
+                            <Input id="student-name-2" placeholder="Alex Johnson" />
+                        </div>
+                        <div className="grid gap-2">
+                            <Label htmlFor="amount-2">Amount</Label>
+                            <Input id="amount-2" type="number" placeholder="50.00" />
+                        </div>
+                        <div className="grid gap-2">
+                            <Label htmlFor="due-date-2">Due Date</Label>
+                            <Input id="due-date-2" type="date" />
+                        </div>
+                        <div className="grid gap-2">
+                            <Label htmlFor="status-2">Status</Label>
+                            <Select>
+                                <SelectTrigger id="status-2">
+                                    <SelectValue placeholder="Select status" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="paid">Paid</SelectItem>
+                                    <SelectItem value="unpaid">Unpaid</SelectItem>
+                                    <SelectItem value="overdue">Overdue</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        </div>
+                        <DialogFooter>
+                            <DialogClose asChild>
+                                <Button onClick={handleAddIncome}>Save Record</Button>
+                            </DialogClose>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
+            </div>
+        )}
       </CardContent>
-      <CardFooter className="flex-col sm:flex-row items-start sm:items-center sm:justify-between gap-4">
-        <div className="text-xs text-muted-foreground">
-          Showing <strong>1-5</strong> of <strong>{payments.length}</strong> payments
-        </div>
-        <div className="font-semibold">
-          Total Paid (July): ${totalPaid.toFixed(2)}
-        </div>
-      </CardFooter>
     </Card>
   )
 }
