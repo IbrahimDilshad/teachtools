@@ -22,13 +22,6 @@ export async function teachingAssistant(input: TeachingAssistantInput) {
     return teachingAssistantFlow(input);
 }
 
-const teachingAssistantPrompt = ai.definePrompt({
-    name: 'teachingAssistantPrompt',
-    input: { schema: TeachingAssistantInputSchema },
-    prompt: `You are a helpful AI assistant for a tutor. The tutor teaches the following subjects: {{subjects}}. Help them with their request: {{message}}. Provide concise, practical, and helpful information.`,
-});
-
-
 const teachingAssistantFlow = ai.defineFlow(
   {
     name: 'teachingAssistantFlow',
@@ -36,9 +29,10 @@ const teachingAssistantFlow = ai.defineFlow(
     outputSchema: z.any(),
   },
   async (input) => {
+    const prompt = `You are a helpful AI assistant for a tutor. The tutor teaches the following subjects: ${input.subjects.join(', ')}. Help them with their request: ${input.message}. Provide concise, practical, and helpful information.`;
+    
     const { stream } = ai.generateStream({
-        prompt: teachingAssistantPrompt,
-        input: input,
+        prompt: prompt,
         model: 'googleai/gemini-1.5-flash',
     });
     
