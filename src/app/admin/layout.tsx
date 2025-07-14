@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { 
   BarChart3,
   Bot,
@@ -20,8 +20,12 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
+  SidebarInset,
 } from "@/components/ui/sidebar"
 import { DashboardHeader } from "@/components/dashboard/header"
+import { useAuth } from "@/hooks/use-auth"
+import { useEffect } from "react"
+import { Skeleton } from "@/components/ui/skeleton"
 
 const navItems = [
   { href: "/admin", icon: BarChart3, label: "Summary" },
@@ -37,11 +41,35 @@ export default function AdminLayout({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
+  const router = useRouter()
+  const { user, loading } = useAuth()
+
+  const adminEmail = "ibrahimzdilshad@gmail.com"
+
+  useEffect(() => {
+    if (!loading) {
+      if (!user || user.email !== adminEmail) {
+        router.push('/dashboard');
+      }
+    }
+  }, [user, loading, router])
 
   const getPageTitle = () => {
     const currentItem = navItems.find(item => item.href === pathname);
     return currentItem ? currentItem.label : "Admin Dashboard";
   };
+
+  if (loading || !user || user.email !== adminEmail) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+          <div className="space-y-4 w-full max-w-md p-4">
+              <Skeleton className="h-12 w-full" />
+              <Skeleton className="h-24 w-full" />
+              <Skeleton className="h-24 w-full" />
+          </div>
+      </div>
+    );
+  }
   
   return (
     <SidebarProvider>
