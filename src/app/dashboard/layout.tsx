@@ -28,6 +28,12 @@ import {
 import { DashboardHeader } from "@/components/dashboard/header"
 import { Chatbot } from "@/components/dashboard/chatbot"
 import { UserNav } from "@/components/dashboard/user-nav"
+import { useAuth } from "@/hooks/use-auth"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { Skeleton } from "@/components/ui/skeleton"
+import { currentUser } from "@/lib/data"
+
 
 const navItems = [
   { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -49,12 +55,33 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
+  const router = useRouter()
+  const { user, loading } = useAuth()
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login');
+    }
+  }, [user, loading, router]);
+
 
   const getPageTitle = () => {
     const allItems = [...navItems, ...bottomNavItems];
     const currentItem = allItems.find(item => item.href === pathname);
     return currentItem ? currentItem.label : "Dashboard";
   };
+
+  if (loading || !user) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="space-y-4 w-full max-w-md p-4">
+          <Skeleton className="h-12 w-full" />
+          <Skeleton className="h-24 w-full" />
+          <Skeleton className="h-24 w-full" />
+        </div>
+      </div>
+    );
+  }
   
   return (
     <SidebarProvider>
@@ -105,7 +132,7 @@ export default function DashboardLayout({
             <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto">
                 {children}
             </main>
-            <Chatbot />
+            { currentUser.isPremium && <Chatbot /> }
         </div>
       </SidebarInset>
     </SidebarProvider>

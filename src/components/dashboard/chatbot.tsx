@@ -1,7 +1,8 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { Bot, Loader2, Send, Sparkles, X, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,6 +18,7 @@ import { currentUser } from '@/lib/data';
 import { useToast } from '@/hooks/use-toast';
 import { teachingAssistant } from '@/ai/flows/teaching-assistant';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useRouter } from 'next/navigation';
 
 type Message = {
   role: 'user' | 'assistant';
@@ -32,15 +34,15 @@ export function Chatbot() {
   const [isLoading, setIsLoading] = useState(false);
   const [userMessageCount, setUserMessageCount] = useState(0);
   const { toast } = useToast();
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const isLimitReached = !currentUser.isPremium && userMessageCount >= MESSAGE_LIMIT;
 
   useEffect(() => {
     // Load message count from localStorage when component mounts
     const savedCount = localStorage.getItem(`messageCount_${currentUser.id}`);
-    if (savedCount) {
-      setUserMessageCount(parseInt(savedCount, 10));
-    }
+    setUserMessageCount(savedCount ? parseInt(savedCount, 10) : 0);
   }, []);
 
   useEffect(() => {
@@ -51,6 +53,13 @@ export function Chatbot() {
       setIsLoading(false);
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    // Auto-scroll to bottom
+    if (scrollAreaRef.current) {
+      scrollAreaRef.current.scrollTo({ top: scrollAreaRef.current.scrollHeight, behavior: 'smooth' });
+    }
+  }, [messages]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
@@ -105,7 +114,14 @@ export function Chatbot() {
         title: 'AI Assistant Error',
         description: 'Could not get a response. Please try again.',
       });
-       setMessages((prev) => prev.slice(0, prev.length -1));
+       setMessages((prev) => {
+        // Remove the empty assistant message placeholder on error
+        const lastMessage = prev[prev.length - 1];
+        if (lastMessage.role === 'assistant' && lastMessage.content === '') {
+            return prev.slice(0, prev.length -1);
+        }
+        return prev;
+       });
     } finally {
       setIsLoading(false);
     }
@@ -134,8 +150,7 @@ export function Chatbot() {
             <X className="h-4 w-4" />
             <span className="sr-only">Close</span>
         </SheetClose>
-        <div className="flex-grow overflow-y-auto pr-4 -mr-4">
-          <ScrollArea className="h-full">
+        <ScrollArea className="flex-grow pr-4 -mr-4" ref={scrollAreaRef as any}>
             <div className="flex flex-col gap-4 py-4 pr-4">
               {messages.length === 0 && !isLimitReached && (
                 <div className="flex items-start gap-3">
@@ -170,7 +185,7 @@ export function Chatbot() {
                   </div>
                 </div>
               ))}
-              {isLoading && messages[messages.length -1]?.role !== 'assistant' && (
+              {isLoading && messages[messages.length -1]?.role === 'assistant' && (
                 <div className="flex items-start gap-3">
                     <div className="p-2 bg-primary/10 rounded-full">
                       <Bot className="h-5 w-5 text-primary" />
@@ -181,15 +196,16 @@ export function Chatbot() {
                 </div>
               )}
             </div>
-          </ScrollArea>
-        </div>
+        </ScrollArea>
         <div className="mt-auto border-t pt-4">
             {isLimitReached ? (
                  <div className="text-center p-4">
                     <Sparkles className="mx-auto h-6 w-6 text-yellow-500 mb-2" />
                     <p className="font-semibold">You've reached the message limit.</p>
-                    <p className="text-sm text-muted-foreground">Please contact support to upgrade to Premium for unlimited AI access.</p>
-                    <Button className="mt-4" size="sm">Contact Support</Button>
+                    <p className="text-sm text-muted-foreground">Upgrade to Premium for unlimited AI access.</p>
+                    <Button asChild className="mt-4" size="sm">
+                      <Link href="/dashboard/upgrade">Upgrade to Premium</Link>
+                    </Button>
                 </div>
             ) : (
              <form onSubmit={handleSubmit} className="flex items-center gap-2">
