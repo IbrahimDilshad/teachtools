@@ -10,7 +10,7 @@
  */
 
 import { ai } from '@/ai/genkit';
-import { z } from 'genkit';
+import { z } from 'zod';
 
 const TeachingAssistantInputSchema = z.object({
   message: z.string().describe('The user\'s message or question.'),
@@ -39,6 +39,17 @@ const teachingAssistantFlow = ai.defineFlow(
         prompt: `You are a helpful AI assistant for a tutor. The tutor teaches the following subjects: {{subjects}}. Help them with their request: {{message}}. Provide concise, practical, and helpful information.`,
         input,
     });
-    return stream;
+    
+    const encoder = new TextEncoder();
+    const readableStream = new ReadableStream({
+      async start(controller) {
+        for await (const chunk of stream) {
+            controller.enqueue(encoder.encode(chunk.text));
+        }
+        controller.close();
+      }
+    });
+
+    return readableStream;
   }
 );

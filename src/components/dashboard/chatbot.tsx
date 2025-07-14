@@ -52,14 +52,22 @@ export function Chatbot() {
       let assistantResponse = '';
       setMessages((prev) => [...prev, { role: 'assistant', content: '' }]);
 
-      for await (const chunk of stream) {
-        assistantResponse += chunk.text;
+      const reader = stream.getReader();
+      const decoder = new TextDecoder();
+      let done = false;
+
+      while (!done) {
+        const { value, done: readerDone } = await reader.read();
+        done = readerDone;
+        const chunk = decoder.decode(value, { stream: !done });
+        assistantResponse += chunk;
         setMessages((prev) => {
           const newMessages = [...prev];
           newMessages[newMessages.length - 1].content = assistantResponse;
           return newMessages;
         });
       }
+
     } catch (error) {
       console.error('Error with teaching assistant:', error);
       toast({
@@ -67,7 +75,7 @@ export function Chatbot() {
         title: 'AI Assistant Error',
         description: 'Could not get a response. Please try again.',
       });
-       setMessages((prev) => prev.slice(0, -2)); // Remove user message and empty assistant message
+       setMessages((prev) => prev.slice(0, prev.length -1));
     } finally {
       setIsLoading(false);
     }
