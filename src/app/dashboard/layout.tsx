@@ -113,12 +113,7 @@ export default function DashboardLayout({
             </div>
         </div>
         <div className="flex-1 flex flex-col">
-            <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
-                <div className="w-full flex-1">
-                    <Skeleton className="h-6 w-48" />
-                </div>
-                <Skeleton className="h-9 w-9 rounded-full" />
-            </header>
+            <DashboardHeader title="Loading..." />
             <main className="flex-1 p-4 md:p-6 lg:p-8">
               <Skeleton className="w-full h-full" />
             </main>

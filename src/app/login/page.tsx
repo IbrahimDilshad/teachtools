@@ -1,4 +1,3 @@
-import dynamic from 'next/dynamic'
 import { GraduationCap } from "lucide-react"
 
 import {
@@ -8,26 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Skeleton } from '@/components/ui/skeleton'
-
-// Dynamically import the component that uses client-side hooks and Firebase
-const LoginForm = dynamic(() => import('@/components/login-form'), { 
-  ssr: false,
-  loading: () => (
-    <div className="grid gap-4">
-      <div className="grid gap-2">
-        <Skeleton className="h-4 w-12" />
-        <Skeleton className="h-10 w-full" />
-      </div>
-      <div className="grid gap-2">
-        <Skeleton className="h-4 w-12" />
-        <Skeleton className="h-10 w-full" />
-      </div>
-      <Skeleton className="h-10 w-full" />
-      <Skeleton className="h-10 w-full" />
-    </div>
-  )
-})
+import LoginClient from "./login-client"
 
 export default function LoginPage() {
   return (
@@ -44,7 +24,7 @@ export default function LoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <LoginForm />
+          <LoginClient />
         </CardContent>
       </Card>
     </div>
