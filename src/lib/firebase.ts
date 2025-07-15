@@ -13,9 +13,45 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
-// Initialize Firebase for SSR and SSG, but only if it's not already initialized.
-const app: FirebaseApp = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const auth: Auth = getAuth(app);
-const db: Firestore = getFirestore(app);
+let app: FirebaseApp;
+let auth: Auth;
+let db: Firestore;
 
-export { db, auth, app };
+if (typeof window !== 'undefined' && !getApps().length) {
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
+} else if (getApps().length) {
+    app = getApp();
+    auth = getAuth(app);
+    db = getFirestore(app);
+}
+
+
+// This is a guard to ensure you don't use these on the server.
+// If you need server-side Firebase, use the Admin SDK.
+const getSafeAuth = () => {
+    if (typeof window === 'undefined') {
+        // This is a mock or minimal version for SSR builds, it won't be functional.
+        return {} as Auth; 
+    }
+    if (!auth) {
+        app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+        auth = getAuth(app);
+    }
+    return auth;
+}
+
+const getSafeDb = () => {
+    if (typeof window === 'undefined') {
+        return {} as Firestore;
+    }
+     if (!db) {
+        app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+        db = getFirestore(app);
+    }
+    return db;
+}
+
+
+export { getSafeAuth, getSafeDb, app, auth, db };
