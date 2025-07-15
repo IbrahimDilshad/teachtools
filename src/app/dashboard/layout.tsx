@@ -12,7 +12,8 @@ import {
   LayoutDashboard, 
   Settings, 
   User, 
-  Users
+  Users,
+  Library
 } from "lucide-react"
 
 import {
@@ -40,6 +41,7 @@ const navItems = [
   { href: "/dashboard/students", icon: Users, label: "Students" },
   { href: "/dashboard/income", icon: DollarSign, label: "Income" },
   { href: "/dashboard/attendance", icon: CheckSquare, label: "Attendance" },
+  { href: "/dashboard/resources", icon: Library, label: "Resources" },
   { href: "/dashboard/reminders", icon: Bell, label: "Smart Reminders" },
 ]
 
