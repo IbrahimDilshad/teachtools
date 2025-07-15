@@ -1,3 +1,5 @@
+// src/app/login/login-client.tsx
+
 "use client";
 import React from 'react';
 import dynamic from 'next/dynamic';
@@ -24,3 +26,5 @@ const LoginForm = dynamic(() => import('@/components/login-form'), {
 export default function LoginClient() {
     return <LoginForm />;
 }
+
+// Trigger a rebuild
