@@ -24,6 +24,16 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  webpack: (config, {isServer}) => {
+    // Add a rule to handle .handlebars and .hbs files
+    config.module.rules.push({
+      test: /\.handlebars$|\.hbs$/,
+      loader: 'handlebars-loader',
+    });
+
+    // Important: return the modified config
+    return config;
+  },
 };
 
 export default withPWA(nextConfig);
