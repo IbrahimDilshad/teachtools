@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApps, getApp, type FirebaseApp } from "firebase/app";
-import { getFirestore, type Firestore } from "firebase/firestore";
-import { getAuth, type Auth } from "firebase/auth";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -13,45 +13,16 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
-let app: FirebaseApp;
-let auth: Auth;
-let db: Firestore;
-
-if (typeof window !== 'undefined' && !getApps().length) {
-  app = initializeApp(firebaseConfig);
-  auth = getAuth(app);
-  db = getFirestore(app);
-} else if (getApps().length) {
-    app = getApp();
-    auth = getAuth(app);
-    db = getFirestore(app);
+// Initialize Firebase for client-side
+function getFirebaseApp() {
+    if (getApps().length === 0) {
+        return initializeApp(firebaseConfig);
+    }
+    return getApp();
 }
 
+const app = getFirebaseApp();
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-// This is a guard to ensure you don't use these on the server.
-// If you need server-side Firebase, use the Admin SDK.
-const getSafeAuth = () => {
-    if (typeof window === 'undefined') {
-        // This is a mock or minimal version for SSR builds, it won't be functional.
-        return {} as Auth; 
-    }
-    if (!auth) {
-        app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-        auth = getAuth(app);
-    }
-    return auth;
-}
-
-const getSafeDb = () => {
-    if (typeof window === 'undefined') {
-        return {} as Firestore;
-    }
-     if (!db) {
-        app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-        db = getFirestore(app);
-    }
-    return db;
-}
-
-
-export { getSafeAuth, getSafeDb, app, auth, db };
+export { app, auth, db };
