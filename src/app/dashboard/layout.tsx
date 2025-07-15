@@ -133,7 +133,18 @@ export default function DashboardLayout({
                     <DashboardHeader title={getPageTitle()} />
                     <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto">
                         {loading || !currentUser ? (
-                            <Skeleton className="w-full h-full" />
+                           <div className="w-full h-full space-y-4">
+                                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                                    <Skeleton className="h-28" />
+                                    <Skeleton className="h-28" />
+                                    <Skeleton className="h-28" />
+                                    <Skeleton className="h-28" />
+                                </div>
+                                <div className="grid gap-4 md:grid-cols-2">
+                                    <Skeleton className="h-80" />
+                                    <Skeleton className="h-80" />
+                                </div>
+                            </div>
                         ) : (
                             children
                         )}

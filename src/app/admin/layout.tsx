@@ -41,7 +41,7 @@ export default function AdminLayout({
   const pathname = usePathname()
   const router = useRouter()
   const { user, loading } = useAuth()
-  const adminEmail = "ibrahimzdilshad@gmail.com"
+  const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
 
   useEffect(() => {
     if (!loading) {
@@ -51,7 +51,7 @@ export default function AdminLayout({
         router.push('/dashboard');
       }
     }
-  }, [user, loading, router])
+  }, [user, loading, router, adminEmail])
 
   const getPageTitle = () => {
     const currentItem = navItems.find(item => item.href === pathname);
@@ -95,7 +95,15 @@ export default function AdminLayout({
             <DashboardHeader title={getPageTitle()} />
             <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto">
               {isLoadingOrUnauthorized ? (
-                <Skeleton className="h-full w-full" />
+                <div className="space-y-4">
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                      <Skeleton className="h-28" />
+                      <Skeleton className="h-28" />
+                      <Skeleton className="h-28" />
+                      <Skeleton className="h-28" />
+                  </div>
+                  <Skeleton className="h-96" />
+                </div>
               ) : (
                 children
               )}
