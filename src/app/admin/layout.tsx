@@ -5,7 +5,6 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { 
   BarChart3,
-  Bot,
   Flag,
   Shield,
   Users,
@@ -31,7 +30,6 @@ const navItems = [
   { href: "/admin", icon: BarChart3, label: "Summary" },
   { href: "/admin/tutors", icon: Users, label: "Tutor Management" },
   { href: "/admin/subscriptions", icon: CreditCard, label: "Subscriptions" },
-  { href: "/admin/chatbot-logs", icon: Bot, label: "Chatbot Logs" },
   { href: "/admin/feature-flags", icon: Flag, label: "Feature Flags" },
 ]
 

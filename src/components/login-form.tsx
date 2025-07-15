@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail } from "firebase/auth"
-import { getAuth } from "@/lib/firebase"
+import { auth } from "@/lib/firebase"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -29,7 +29,6 @@ export default function LoginForm() {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const { toast } = useToast()
-  const auth = getAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
