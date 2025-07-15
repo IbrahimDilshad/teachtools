@@ -48,11 +48,7 @@ const bottomNavItems = [
     { href: "/dashboard/settings", icon: Settings, label: "Settings" },
 ]
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+function DashboardContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
   const { user, loading } = useAuth()
@@ -82,7 +78,6 @@ export default function DashboardLayout({
     }
   }, [user, loading, router]);
 
-
   const getPageTitle = () => {
     const allItems = [...navItems, ...bottomNavItems];
     const currentItem = allItems.find(item => item.href === pathname);
@@ -91,39 +86,39 @@ export default function DashboardLayout({
 
   if (loading || !currentUser) {
     return (
-      <div className="flex h-screen w-full">
-        <div className="hidden md:flex flex-col w-56 border-r">
-            <div className="flex flex-col gap-2 p-2">
-                <div className="flex items-center gap-2 p-2">
-                    <GraduationCap className="size-7 text-primary" />
-                    <Skeleton className="h-6 w-24" />
-                </div>
-                <div className="flex flex-col gap-1 p-2">
-                    <Skeleton className="h-8 w-full" />
-                    <Skeleton className="h-8 w-full" />
-                    <Skeleton className="h-8 w-full" />
-                    <Skeleton className="h-8 w-full" />
-                    <Skeleton className="h-8 w-full" />
-                    <Skeleton className="h-8 w-full" />
+        <div className="flex h-full w-full">
+            <div className="hidden md:block w-56 border-r">
+                <div className="flex h-full flex-col gap-2 p-2">
+                    <div className="flex items-center gap-2 p-2">
+                        <GraduationCap className="size-7 text-primary" />
+                        <Skeleton className="h-6 w-24" />
+                    </div>
+                    <div className="flex flex-col gap-1 p-2">
+                        <Skeleton className="h-8 w-full" />
+                        <Skeleton className="h-8 w-full" />
+                        <Skeleton className="h-8 w-full" />
+                        <Skeleton className="h-8 w-full" />
+                        <Skeleton className="h-8 w-full" />
+                        <Skeleton className="h-8 w-full" />
+                    </div>
+                    <div className="mt-auto flex flex-col gap-1 p-2">
+                        <Skeleton className="h-8 w-full" />
+                        <Skeleton className="h-8 w-full" />
+                    </div>
                 </div>
             </div>
-            <div className="mt-auto flex flex-col gap-1 p-2">
-                <Skeleton className="h-8 w-full" />
-                <Skeleton className="h-8 w-full" />
+            <div className="flex-1 flex flex-col h-full">
+                <DashboardHeader title="Loading..." />
+                <main className="flex-1 p-4 md:p-6 lg:p-8">
+                <Skeleton className="w-full h-full" />
+                </main>
             </div>
         </div>
-        <div className="flex-1 flex flex-col">
-            <DashboardHeader title="Loading..." />
-            <main className="flex-1 p-4 md:p-6 lg:p-8">
-              <Skeleton className="w-full h-full" />
-            </main>
-        </div>
-      </div>
     );
   }
   
   return (
-    <SidebarProvider>
+    <>
       <Sidebar>
         <SidebarHeader>
           <div className="flex items-center gap-2">
@@ -172,6 +167,19 @@ export default function DashboardLayout({
             {currentUser && <Chatbot user={currentUser} />}
         </div>
       </SidebarInset>
-    </SidebarProvider>
+    </>
   )
+}
+
+
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+    return (
+        <SidebarProvider>
+            <DashboardContent>{children}</DashboardContent>
+        </SidebarProvider>
+    )
 }
