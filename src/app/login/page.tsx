@@ -1,5 +1,7 @@
-import { GraduationCap } from "lucide-react"
 
+"use client"
+
+import { GraduationCap } from "lucide-react"
 import {
   Card,
   CardContent,

@@ -1,3 +1,4 @@
+
 "use client"
 
 import {
@@ -9,39 +10,26 @@ import {
 } from "@/components/ui/card"
 import { Users, UserCheck, Bot, Languages } from "lucide-react"
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts"
+import { useState, useEffect } from "react"
 
-const summaryData = [
-  {
-    name: "Jan",
-    total: Math.floor(Math.random() * 50) + 10,
-  },
-  {
-    name: "Feb",
-    total: Math.floor(Math.random() * 50) + 10,
-  },
-  {
-    name: "Mar",
-    total: Math.floor(Math.random() * 50) + 10,
-  },
-  {
-    name: "Apr",
-    total: Math.floor(Math.random() * 50) + 10,
-  },
-  {
-    name: "May",
-    total: Math.floor(Math.random() * 50) + 10,
-  },
-  {
-    name: "Jun",
-    total: Math.floor(Math.random() * 50) + 10,
-  },
-  {
-    name: "Jul",
-    total: Math.floor(Math.random() * 80) + 20,
-  },
-]
+const generateData = () => [
+  { name: "Jan", total: Math.floor(Math.random() * 50) + 10 },
+  { name: "Feb", total: Math.floor(Math.random() * 50) + 10 },
+  { name: "Mar", total: Math.floor(Math.random() * 50) + 10 },
+  { name: "Apr", total: Math.floor(Math.random() * 50) + 10 },
+  { name: "May", total: Math.floor(Math.random() * 50) + 10 },
+  { name: "Jun", total: Math.floor(Math.random() * 50) + 10 },
+  { name: "Jul", total: Math.floor(Math.random() * 80) + 20 },
+];
+
 
 export default function AdminDashboardPage() {
+  const [summaryData, setSummaryData] = useState<any[]>([]);
+
+  useEffect(() => {
+    setSummaryData(generateData());
+  }, []);
+
   return (
     <div className="flex flex-col gap-6">
        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

@@ -1,4 +1,7 @@
-import { Check, Lightbulb, ClipboardList } from "lucide-react"
+
+"use client"
+
+import { ClipboardList, Lightbulb } from "lucide-react"
 import {
   Card,
   CardContent,

@@ -1,3 +1,6 @@
+
+"use client"
+
 import {
     Card,
     CardContent,
@@ -28,4 +31,3 @@ import {
       </Card>
     )
   }
-  

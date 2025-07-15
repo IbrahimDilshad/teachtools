@@ -1,3 +1,6 @@
+
+"use client"
+
 import { GraduationCap } from "lucide-react"
 
 import {

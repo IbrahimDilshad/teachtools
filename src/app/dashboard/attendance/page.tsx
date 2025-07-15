@@ -1,4 +1,6 @@
-import { Check, X } from "lucide-react"
+
+"use client"
+
 import {
   Card,
   CardContent,

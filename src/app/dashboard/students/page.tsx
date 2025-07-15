@@ -27,7 +27,6 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -41,7 +40,7 @@ export default function StudentsPage() {
   const { toast } = useToast()
   const [isAddStudentOpen, setAddStudentOpen] = useState(false);
   const [isLogProgressOpen, setLogProgressOpen] = useState(false);
-  const [selectedStudent, setSelectedStudent] = useState<typeof students[0] | null>(null);
+  const [selectedStudent, setSelectedStudent] = useState<(typeof students)[0] | null>(null);
 
   const handleAddStudent = () => {
     toast({
