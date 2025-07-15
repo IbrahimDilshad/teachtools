@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import LoginClient from "./login-client"
+import LoginForm from "@/components/login-form"
 
 export default function LoginPage() {
   return (
@@ -24,7 +24,7 @@ export default function LoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <LoginClient />
+          <LoginForm />
         </CardContent>
       </Card>
     </div>

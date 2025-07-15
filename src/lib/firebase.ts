@@ -14,14 +14,8 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase for client-side
-function getFirebaseApp() {
-    if (getApps().length === 0) {
-        return initializeApp(firebaseConfig);
-    }
-    return getApp();
-}
+const app: FirebaseApp = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
-const app = getFirebaseApp();
 const auth = getAuth(app);
 const db = getFirestore(app);
 

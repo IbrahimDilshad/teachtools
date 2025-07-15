@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import SignupClient from "./signup-client"
+import SignupForm from "@/components/signup-form"
 
 export default function SignupPage() {
   return (
@@ -24,7 +24,7 @@ export default function SignupPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <SignupClient />
+          <SignupForm />
         </CardContent>
       </Card>
     </div>
