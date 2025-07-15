@@ -10,7 +10,6 @@ import {
   Shield,
   Users,
   CreditCard,
-  GraduationCap
 } from "lucide-react"
 
 import {
@@ -27,7 +26,6 @@ import { DashboardHeader } from "@/components/dashboard/header"
 import { useAuth } from "@/hooks/use-auth"
 import { useEffect } from "react"
 import { Skeleton } from "@/components/ui/skeleton"
-import { UserNav } from "@/components/dashboard/user-nav"
 
 const navItems = [
   { href: "/admin", icon: BarChart3, label: "Summary" },
@@ -45,7 +43,6 @@ export default function AdminLayout({
   const pathname = usePathname()
   const router = useRouter()
   const { user, loading } = useAuth()
-
   const adminEmail = "ibrahimzdilshad@gmail.com"
 
   useEffect(() => {
@@ -63,36 +60,8 @@ export default function AdminLayout({
     return currentItem ? currentItem.label : "Admin Dashboard";
   };
 
-  if (loading || !user || user.email !== adminEmail) {
-    return (
-      <div className="flex h-screen w-full">
-        <div className="hidden md:flex flex-col w-56 border-r">
-          <div className="flex flex-col gap-2 p-2">
-             <div className="flex items-center gap-2 p-2">
-                <Shield className="size-7 text-primary" />
-                <div className="flex flex-col">
-                    <Skeleton className="h-5 w-24" />
-                    <Skeleton className="h-3 w-20 mt-1" />
-                </div>
-            </div>
-            <div className="flex flex-col gap-1 p-2">
-              <Skeleton className="h-8 w-full" />
-              <Skeleton className="h-8 w-full" />
-              <Skeleton className="h-8 w-full" />
-              <Skeleton className="h-8 w-full" />
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col flex-1">
-          <DashboardHeader title="Loading..." />
-          <main className="flex-1 p-4 md:p-6 lg:p-8">
-            <Skeleton className="h-full w-full" />
-          </main>
-        </div>
-      </div>
-    );
-  }
-  
+  const isLoadingOrUnauthorized = loading || !user || user.email !== adminEmail;
+
   return (
     <SidebarProvider>
       <Sidebar>
@@ -127,7 +96,11 @@ export default function AdminLayout({
         <div className="flex flex-col h-full">
             <DashboardHeader title={getPageTitle()} />
             <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto">
-                {children}
+              {isLoadingOrUnauthorized ? (
+                <Skeleton className="h-full w-full" />
+              ) : (
+                children
+              )}
             </main>
         </div>
       </SidebarInset>
