@@ -1,8 +1,5 @@
 
-"use client"
-
 import { GraduationCap } from "lucide-react"
-
 import {
   Card,
   CardContent,
@@ -10,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import SignupForm from "@/components/signup-form"
+import SignupClient from "./signup-client";
 
 export default function SignupPage() {
   return (
@@ -27,7 +24,7 @@ export default function SignupPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <SignupForm />
+          <SignupClient />
         </CardContent>
       </Card>
     </div>

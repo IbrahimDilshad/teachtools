@@ -1,6 +1,4 @@
 
-"use client"
-
 import { GraduationCap } from "lucide-react"
 import {
   Card,
@@ -9,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import LoginForm from "@/components/login-form"
+import LoginClient from "./login-client";
 
 export default function LoginPage() {
   return (
@@ -26,7 +24,7 @@ export default function LoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <LoginForm />
+          <LoginClient />
         </CardContent>
       </Card>
     </div>

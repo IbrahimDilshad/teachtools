@@ -48,138 +48,99 @@ const bottomNavItems = [
     { href: "/dashboard/settings", icon: Settings, label: "Settings" },
 ]
 
-function DashboardContent({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname()
-  const router = useRouter()
-  const { user, loading } = useAuth()
-  const [currentUser, setCurrentUser] = useState<AppUser | null>(null)
-
-  useEffect(() => {
-    if (!loading) {
-      if (!user) {
-        router.push('/login');
-      } else {
-        const appUser = tutors.find(t => t.email === user.email)
-        if (appUser) {
-          setCurrentUser(appUser)
-        } else {
-          // Fallback for new users not in the static list, e.g., Google sign-in
-          const newUser: AppUser = {
-            id: user.uid,
-            name: user.displayName || user.email || 'New User',
-            email: user.email || 'no-email',
-            isPremium: false,
-            subjects: ['General'],
-            avatar: user.photoURL || 'https://placehold.co/40x40.png',
-          };
-          setCurrentUser(newUser);
-        }
-      }
-    }
-  }, [user, loading, router]);
-
-  const getPageTitle = () => {
-    const allItems = [...navItems, ...bottomNavItems];
-    const currentItem = allItems.find(item => item.href === pathname);
-    return currentItem ? currentItem.label : "Dashboard";
-  };
-
-  if (loading || !currentUser) {
-    return (
-        <div className="flex h-full w-full">
-            <div className="hidden md:block w-56 border-r">
-                <div className="flex h-full flex-col gap-2 p-2">
-                    <div className="flex items-center gap-2 p-2">
-                        <GraduationCap className="size-7 text-primary" />
-                        <Skeleton className="h-6 w-24" />
-                    </div>
-                    <div className="flex flex-col gap-1 p-2">
-                        <Skeleton className="h-8 w-full" />
-                        <Skeleton className="h-8 w-full" />
-                        <Skeleton className="h-8 w-full" />
-                        <Skeleton className="h-8 w-full" />
-                        <Skeleton className="h-8 w-full" />
-                        <Skeleton className="h-8 w-full" />
-                    </div>
-                    <div className="mt-auto flex flex-col gap-1 p-2">
-                        <Skeleton className="h-8 w-full" />
-                        <Skeleton className="h-8 w-full" />
-                    </div>
-                </div>
-            </div>
-            <div className="flex-1 flex flex-col h-full">
-                <DashboardHeader title="Loading..." />
-                <main className="flex-1 p-4 md:p-6 lg:p-8">
-                <Skeleton className="w-full h-full" />
-                </main>
-            </div>
-        </div>
-    );
-  }
-  
-  return (
-    <>
-      <Sidebar>
-        <SidebarHeader>
-          <div className="flex items-center gap-2">
-            <GraduationCap className="size-7 text-primary" />
-            <span className="text-lg font-semibold font-headline">TeachTools</span>
-          </div>
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarMenu>
-            {navItems.map((item) => (
-              <SidebarMenuItem key={item.href}>
-                <Link href={item.href}>
-                  <SidebarMenuButton 
-                    isActive={pathname === item.href}
-                    tooltip={item.label}
-                  >
-                    <item.icon />
-                    <span>{item.label}</span>
-                  </SidebarMenuButton>
-                </Link>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarContent>
-        <SidebarFooter>
-           <SidebarMenu>
-            {bottomNavItems.map((item) => (
-                <SidebarMenuItem key={item.href}>
-                  <Link href={item.href}>
-                    <SidebarMenuButton isActive={pathname === item.href} tooltip={item.label}>
-                      <item.icon />
-                      <span>{item.label}</span>
-                    </SidebarMenuButton>
-                  </Link>
-                </SidebarMenuItem>
-            ))}
-           </SidebarMenu>
-        </SidebarFooter>
-      </Sidebar>
-      <SidebarInset>
-        <div className="flex flex-col h-full">
-            <DashboardHeader title={getPageTitle()} />
-            <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto">
-                {children}
-            </main>
-            {currentUser && <Chatbot user={currentUser} />}
-        </div>
-      </SidebarInset>
-    </>
-  )
-}
-
-
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+    const pathname = usePathname()
+    const router = useRouter()
+    const { user, loading } = useAuth()
+    const [currentUser, setCurrentUser] = useState<AppUser | null>(null)
+
+    useEffect(() => {
+        if (!loading) {
+        if (!user) {
+            router.push('/login');
+        } else {
+            const appUser = tutors.find(t => t.email === user.email)
+            if (appUser) {
+            setCurrentUser(appUser)
+            } else {
+            const newUser: AppUser = {
+                id: user.uid,
+                name: user.displayName || user.email || 'New User',
+                email: user.email || 'no-email',
+                isPremium: false,
+                subjects: ['General'],
+                avatar: user.photoURL || 'https://placehold.co/40x40.png',
+            };
+            setCurrentUser(newUser);
+            }
+        }
+        }
+    }, [user, loading, router]);
+
+    const getPageTitle = () => {
+        const allItems = [...navItems, ...bottomNavItems];
+        const currentItem = allItems.find(item => item.href === pathname);
+        return currentItem ? currentItem.label : "Dashboard";
+    };
+
     return (
         <SidebarProvider>
-            <DashboardContent>{children}</DashboardContent>
+            <Sidebar>
+                <SidebarHeader>
+                <div className="flex items-center gap-2">
+                    <GraduationCap className="size-7 text-primary" />
+                    <span className="text-lg font-semibold font-headline">TeachTools</span>
+                </div>
+                </SidebarHeader>
+                <SidebarContent>
+                <SidebarMenu>
+                    {navItems.map((item) => (
+                    <SidebarMenuItem key={item.href}>
+                        <Link href={item.href}>
+                        <SidebarMenuButton 
+                            isActive={pathname === item.href}
+                            tooltip={item.label}
+                        >
+                            <item.icon />
+                            <span>{item.label}</span>
+                        </SidebarMenuButton>
+                        </Link>
+                    </SidebarMenuItem>
+                    ))}
+                </SidebarMenu>
+                </SidebarContent>
+                <SidebarFooter>
+                <SidebarMenu>
+                    {bottomNavItems.map((item) => (
+                        <SidebarMenuItem key={item.href}>
+                        <Link href={item.href}>
+                            <SidebarMenuButton isActive={pathname === item.href} tooltip={item.label}>
+                            <item.icon />
+                            <span>{item.label}</span>
+                            </SidebarMenuButton>
+                        </Link>
+                        </SidebarMenuItem>
+                    ))}
+                </SidebarMenu>
+                </SidebarFooter>
+            </Sidebar>
+            <SidebarInset>
+                <div className="flex flex-col h-full">
+                    <DashboardHeader title={getPageTitle()} />
+                    <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto">
+                        {loading || !currentUser ? (
+                            <Skeleton className="w-full h-full" />
+                        ) : (
+                            children
+                        )}
+                    </main>
+                    {currentUser && <Chatbot user={currentUser} />}
+                </div>
+            </SidebarInset>
         </SidebarProvider>
     )
 }
